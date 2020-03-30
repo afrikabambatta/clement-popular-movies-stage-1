@@ -1,18 +1,17 @@
 package com.example.android.popularmovies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.Toast;
 
-import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity
         implements MovieGridAdapter.MovieItemClickListener{
 
-    private final LinkedList<String> mDummyMovieData = new LinkedList<>();
     private RecyclerView mRecyclerView;
     private MovieGridAdapter mAdapter;
     private Toast mToast;
@@ -22,18 +21,16 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        for(int i = 0; i < 100; i++){
-            mDummyMovieData.add("Movie #" + (i+1));
-        }
-
         // get a handle to the recycler view
         mRecyclerView = findViewById(R.id.rv_movies);
         // give the recycler default layout manager
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //mRecyclerView.setLayoutManager(new GridLayoutManager
+        //        (this, 2, RecyclerView.VERTICAL, false));
         // let the recycler all viewholders are the same size for optimization
-        mRecyclerView.setHasFixedSize(true);
+        //mRecyclerView.setHasFixedSize(true);
         // create adapter for recycler view and give it dummy data
-        mAdapter = new MovieGridAdapter(mDummyMovieData, this);
+        mAdapter = new MovieGridAdapter(this);
         // set the adapter on the recycler
         mRecyclerView.setAdapter(mAdapter);
     }

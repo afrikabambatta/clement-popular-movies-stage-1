@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.LinkedList;
 
 public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieViewHolder> {
-
-    private final LinkedList<String> mMovieList;
 
     final private MovieItemClickListener mOnClickListener;
 
@@ -27,9 +26,8 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     * Constructor for Adapter
     *
     */
-    public MovieGridAdapter(LinkedList<String> movieList, MovieItemClickListener listener){
+    public MovieGridAdapter(MovieItemClickListener listener){
         // I can pass in the movieList or just its size
-        mMovieList = movieList;
         mOnClickListener = listener;
     }
 
@@ -66,9 +64,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         // pass in the position to retrieve movie name at position
-        String mCurrent = mMovieList.get(position);
-        // recycler takes the holder and gives it new text
-        holder.movieItemView.setText(mCurrent);
+        holder.mImage.setImageResource(R.drawable.jamesbond);
     }
 
     /**
@@ -80,7 +76,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     // Recycler view needs to know how many items in the data to make space for it
     @Override
     public int getItemCount() {
-        return mMovieList.size();
+        return 10;
     }
 
     /**
@@ -92,8 +88,8 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     class MovieViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener{
 
+        private ImageView mImage;
 
-        private final TextView movieItemView;
 
         /**
          * Constructor that assigns movieItem xml to viewholder
@@ -102,8 +98,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
          */
         public MovieViewHolder(View itemView){
             super(itemView);
-            // This viewholder is made up of a text view, for now
-            movieItemView  = itemView.findViewById(R.id.movie_poster);
+            mImage = itemView.findViewById(R.id.iv_movie_poster);
             itemView.setOnClickListener(this);
         }
 
