@@ -24,9 +24,8 @@ public class MainActivity extends AppCompatActivity
         // get a handle to the recycler view
         mRecyclerView = findViewById(R.id.rv_movies);
         // give the recycler default layout manager
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //mRecyclerView.setLayoutManager(new GridLayoutManager
-        //        (this, 2, RecyclerView.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new GridLayoutManager
+                (this, 2, RecyclerView.VERTICAL, false));
         // let the recycler all viewholders are the same size for optimization
         //mRecyclerView.setHasFixedSize(true);
         // create adapter for recycler view and give it dummy data

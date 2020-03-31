@@ -9,12 +9,12 @@ WIP: In a background thread, app queries the /movie/popular or /movie/top_rated 
 
 [HARD] - Movies are displayed in the main layout via a grid of their corresponding movie poster thumbnails.
 - When a movie poster thumbnail is selected, the movie details screen is launched.
-GRID(1): setup a recycler grid layout for activity_main.xml, use stub images for now
+✓ GRID(1): setup a recycler grid layout for activity_main.xml, use stub images for now
     ✓ recyclerview
     ✓ adapterview
     ✓ viewholder
-    - clicklistener
-    - itemCount()
+    ✓ clicklistener
+    ✓ itemCount()
 GRID(2): hook up query task to populate grid layout with movie posters from movieDB
 GRID(3): when movie poster is clicked, send intent to detailsactivity
 

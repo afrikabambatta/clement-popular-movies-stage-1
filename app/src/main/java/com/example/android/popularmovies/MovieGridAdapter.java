@@ -70,7 +70,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
 //        holder.mImage.setImageResource(R.drawable.jamesbond);
         Picasso
                 .get()
-                .load("http://i.imgur.com/tGbaZCY.jpg")
+                .load("https://i.imgur.com/tGbaZCY.jpg")
 //                .resize(100,100)
 //                .centerCrop()
                 .into(holder.mImage);
