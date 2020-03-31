@@ -1,6 +1,7 @@
 package com.example.android.popularmovies;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 
@@ -64,7 +67,13 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         // pass in the position to retrieve movie name at position
-        holder.mImage.setImageResource(R.drawable.jamesbond);
+//        holder.mImage.setImageResource(R.drawable.jamesbond);
+        Picasso
+                .get()
+                .load("http://i.imgur.com/tGbaZCY.jpg")
+//                .resize(100,100)
+//                .centerCrop()
+                .into(holder.mImage);
     }
 
     /**
