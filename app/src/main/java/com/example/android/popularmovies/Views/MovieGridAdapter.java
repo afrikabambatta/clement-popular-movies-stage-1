@@ -1,19 +1,16 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.Views;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android.popularmovies.R;
 import com.squareup.picasso.Picasso;
-
-import java.util.LinkedList;
 
 public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieViewHolder> {
 

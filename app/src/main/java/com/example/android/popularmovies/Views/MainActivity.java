@@ -1,12 +1,13 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.Toast;
+
+import com.example.android.popularmovies.R;
 
 
 public class MainActivity extends AppCompatActivity
