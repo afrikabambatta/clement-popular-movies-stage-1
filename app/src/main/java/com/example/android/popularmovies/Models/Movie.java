@@ -1,6 +1,5 @@
 package com.example.android.popularmovies.Models;
 
-import android.media.Image;
 import android.widget.ImageView;
 
 public class Movie {
@@ -40,7 +39,7 @@ public class Movie {
 
     public ImageView getMoviePoster() { return mMoviePoster; }
 
-    public void setMoviePoster(Image mMoviePoster) { this.mMoviePoster = mMoviePoster; }
+    public void setMoviePoster(ImageView mMoviePoster) { this.mMoviePoster = mMoviePoster; }
 
     public int getVoteAverage() { return mVoteAverage; }
 
