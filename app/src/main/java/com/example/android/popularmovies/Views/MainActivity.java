@@ -4,10 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.Utils.NetworkUtils;
+
+import java.net.URL;
 
 
 public class MainActivity extends AppCompatActivity
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity
         mAdapter = new MovieGridAdapter(this);
         // set the adapter on the recycler
         mRecyclerView.setAdapter(mAdapter);
+
     }
 
     @Override
@@ -43,5 +49,50 @@ public class MainActivity extends AppCompatActivity
         mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
 
         mToast.show();
+    }
+
+    public class FetchMoviePosterTask extends AsyncTask<String, Void, String[]>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String[] doInBackground(String... params) {
+
+            /* If there's no zip code, there's nothing to look up. */
+            if (params.length == 0) {
+                return null;
+            }
+
+            String location = params[0];
+            URL weatherRequestUrl = NetworkUtils.buildUrl(location);
+
+            try {
+                String jsonWeatherResponse = NetworkUtils
+                        .getResponseFromHttpUrl(weatherRequestUrl);
+
+                String[] simpleJsonWeatherData = OpenWeatherJsonUtils
+                        .getSimpleWeatherStringsFromJson(MainActivity.this, jsonWeatherResponse);
+
+                return simpleJsonWeatherData;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String[] weatherData) {
+//            mLoadingIndicator.setVisibility(View.INVISIBLE);
+//            if (weatherData != null) {
+//                showWeatherDataView();
+//                mForecastAdapter.setWeatherData(weatherData);
+//            } else {
+//                showErrorMessage();
+//            }
+        }
     }
 }
