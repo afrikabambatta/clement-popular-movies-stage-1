@@ -3,21 +3,16 @@ package com.example.android.popularmovies.Data;
 import android.net.Uri;
 import android.util.Log;
 
-import com.example.android.popularmovies.Utils.NetworkUtils;
-
-import org.json.JSONObject;
-
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 
 /**
  * Data class used to query TheMovieDB API.
  */
-public class TheMovieDbApi {
+public class TheMovieDB {
 
     // log cat tag for debugging
-    private static final String TAG = TheMovieDbApi.class.getSimpleName();
+    private static final String TAG = TheMovieDB.class.getSimpleName();
 
     // the url to access the api
     private static final String MOVIE_API_URL = "https://api.themoviedb.org/3/";
