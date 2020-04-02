@@ -1,6 +1,7 @@
 package com.example.android.popularmovies.Models;
 
 import android.media.Image;
+import android.widget.ImageView;
 
 public class Movie {
 
@@ -11,7 +12,7 @@ public class Movie {
     private String mReleaseDate;
 
     // An image of the movie poster in size w185
-    private Image mMoviePoster;
+    private ImageView mMoviePoster;
 
     // The average rating of the movie between 1-10
     private int mVoteAverage;
@@ -21,7 +22,7 @@ public class Movie {
 
     public Movie(){}
 
-    public Movie(String title, String releaseDate, Image moviePoster, int voteAverage, String plot){
+    public Movie(String title, String releaseDate, ImageView moviePoster, int voteAverage, String plot){
         mTitle = title;
         mReleaseDate = releaseDate;
         mMoviePoster = moviePoster;
@@ -37,7 +38,7 @@ public class Movie {
 
     public void setReleaseDate(String mReleaseDate) { this.mReleaseDate = mReleaseDate; }
 
-    public Image getMoviePoster() { return mMoviePoster; }
+    public ImageView getMoviePoster() { return mMoviePoster; }
 
     public void setMoviePoster(Image mMoviePoster) { this.mMoviePoster = mMoviePoster; }
 
