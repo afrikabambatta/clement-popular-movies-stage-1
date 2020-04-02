@@ -20,7 +20,10 @@ public class MainActivity extends AppCompatActivity
 
     private RecyclerView mRecyclerView;
     private MovieGridAdapter mAdapter;
-    private Toast mToast;
+
+    private
+
+    private Toast mToast; // TODO: Delete toasts from the app
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -16,6 +16,7 @@ import java.net.URL;
  */
 public class TheMovieDbApi {
 
+    // log cat tag for debugging
     private static final String TAG = TheMovieDbApi.class.getSimpleName();
 
     // the url to access the api
@@ -53,7 +54,29 @@ public class TheMovieDbApi {
     private static final String API_PARAM = "api_key";
     private static final String SORT_BY_PARAM = "sort_by";
 
-    private static URL buildUrl(String sortOrder){
+    /**
+     * Call this function to get a list of movies sorted by popularity in descending order
+     * @return
+     */
+    public static URL getMoviesSortedByPopularity(){
+        return buildMovieListUrl(POPULARITY_DESCENDING);
+    }
+
+    /**
+     * Call this function to get a list of movies sorted by vote avg in descending order
+     * @return
+     */
+    public static URL getMoviesSortedByVoteAvg(){
+        return buildMovieListUrl(VOTE_AVG_DESCENDING);
+    }
+
+    /**
+     * Specify a sort order and this function will return a list of movies accordingly
+     * @param sortOrder determines the order that the list of movies returned
+     *                 from the url will be sorted
+     * @return a url that can query a json array of movies
+     */
+    private static URL buildMovieListUrl(String sortOrder){
         Uri builtUri = Uri.parse(MOVIE_API_URL).buildUpon()
                 .appendPath(DISCOVER_MOVIE)
                 .appendQueryParameter(API_PARAM, API_KEY)
