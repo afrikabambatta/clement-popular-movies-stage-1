@@ -6,13 +6,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
+import com.example.android.popularmovies.Data.TheMovieDB;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.Utils.NetworkUtils;
+import com.example.android.popularmovies.Models.Movie;
+import com.example.android.popularmovies.Utils.JsonUtils;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity
@@ -21,7 +24,7 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
     private MovieGridAdapter mAdapter;
 
-    private
+    private ArrayList<Movie> mMoviesList;
 
     private Toast mToast; // TODO: Delete toasts from the app
 
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity
         mAdapter = new MovieGridAdapter(this);
         // set the adapter on the recycler
         mRecyclerView.setAdapter(mAdapter);
-
+        loadMoviesList();
     }
 
     @Override
@@ -54,48 +57,51 @@ public class MainActivity extends AppCompatActivity
         mToast.show();
     }
 
-    public class FetchMoviePosterTask extends AsyncTask<String, Void, String[]>{
+    public void loadMoviesList(){
+        // TODO: retrieve the current setting of the spinner then pass it into FetchMoviePoster
+        new FetchMoviesTask().execute();
+    }
+
+    public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
+
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//        }
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+        protected Void doInBackground(String... filterOption) {
 
-        @Override
-        protected String[] doInBackground(String... params) {
+            URL movieListRequestUrl;
 
-            /* If there's no zip code, there's nothing to look up. */
-            if (params.length == 0) {
-                return null;
+            // gets a url that will return a list of movies sorted by popularity
+            if(filterOption.equals("popularity")){
+                movieListRequestUrl = TheMovieDB.getMoviesSortedByPopularity();
+            } else if(filterOption.equals("vote_average")){
+                movieListRequestUrl = TheMovieDB.getMoviesSortedByVoteAvg();
+            } else {
+                return null; //TODO: Fix this default case, throw an exception or something
             }
 
-            String location = params[0];
-            URL weatherRequestUrl = NetworkUtils.buildUrl(location);
 
             try {
-                String jsonWeatherResponse = NetworkUtils
-                        .getResponseFromHttpUrl(weatherRequestUrl);
+                // use the url to get a json string of the movie list
+                String jsonMovieResponse = NetworkUtils
+                        .getResponseFromHttpUrl(movieListRequestUrl);
 
-                String[] simpleJsonWeatherData = OpenWeatherJsonUtils
-                        .getSimpleWeatherStringsFromJson(MainActivity.this, jsonWeatherResponse);
+                // now take the json string and make a lot of movies out of it
 
-                return simpleJsonWeatherData;
+                mMoviesList = JsonUtils.parseMovieJson(jsonMovieResponse);
 
             } catch (Exception e) {
                 e.printStackTrace();
-                return null;
             }
+            return null;
         }
 
-        @Override
-        protected void onPostExecute(String[] weatherData) {
-//            mLoadingIndicator.setVisibility(View.INVISIBLE);
-//            if (weatherData != null) {
-//                showWeatherDataView();
-//                mForecastAdapter.setWeatherData(weatherData);
-//            } else {
-//                showErrorMessage();
-//            }
-        }
+//        @Override
+//        protected void onPostExecute(String[] weatherData) {
+//
+//        }
     }
 }
