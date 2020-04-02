@@ -90,16 +90,14 @@ public class TheMovieDB {
         return url;
     }
 
-    public static String getMoviePosterPath(String posterPath){
+    public static Uri getMoviePosterPath(String posterPath){
 
-        Uri.Builder builder = new Uri.Builder();
-        String imageUrl = builder.appendPath(IMAGE_BASE_URL)
+        Uri posterImageUri = Uri.parse(IMAGE_BASE_URL).buildUpon()
                 .appendPath(SIZE)
                 .appendPath(posterPath)
-                .build()
-                .toString();
+                .build();
 
-        return imageUrl;
+        return posterImageUri;
     }
 
 }
