@@ -15,15 +15,15 @@ WIP: In a background thread, app queries the /movie/popular or /movie/top_rated 
     ✓ viewholder
     ✓ clicklistener
     ✓ itemCount()
-GRID(2): hook up query task to populate grid layout with movie posters from movieDB
+✓ GRID(2): hook up query task to populate grid layout with movie posters from movieDB
 GRID(3): when movie poster is clicked, send intent to detailsactivity
 
 [MED]In a background thread, app queries the /movie/popular or /movie/top_rated API for the sort criteria specified in the settings menu.
-QUERY(1): Acquire API Key from movieDB and digest the API
-QUERY(2): Create query class of some sort as a utility class that queries the API using AsyncTask
+✓ QUERY(1): Acquire API Key from movieDB and digest the API
+✓ QUERY(2): Create query class of some sort as a utility class that queries the API using AsyncTask
 QUERY(3): Use URI builder to setup query for popular and top-rated movies, return ordered list
     of movie name and cover image
-QUERY(4): Figure out how to use picasso to get images into the app
+✓ QUERY(4): Figure out how to use picasso to get images into the app
 
 [MED] UI contains an element (i.e a spinner or settings menu) to toggle the sort order of the movies by: most popular, highest rated.
 - When a user changes the sort criteria (“most popular and highest rated”) the main view gets updated correctly.

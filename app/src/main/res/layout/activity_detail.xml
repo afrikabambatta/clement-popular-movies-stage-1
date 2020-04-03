@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:padding="16dp"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            tools:text="The Amazing John Wick" />
+
+        <ImageView
+            android:id="@+id/iv_detail_poster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            tools:src="@drawable/johnwick" />
+
+
+        <TextView
+            android:id="@+id/tv_release_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="24sp"
+            tools:text="Released: 20-11-2013"/>
+
+        <TextView
+            android:id="@+id/tv_vote_avg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="24sp"
+            tools:text="Average User Rating: 7"/>
+
+        <TextView
+            android:id="@+id/tv_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="24sp"
+            tools:text="This is a story of a retired man who get's woken up by bad guys he blasts them to smithreens. I hear his dog dies and the gun actionin this movie is top notch. Imagine a modern day technology of the matrix where the action is so good you can't help but enjoy the sequence"
+            />
+
+
+    </LinearLayout>
+
+</ScrollView>
