@@ -9,12 +9,16 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android.popularmovies.Models.Movie;
 import com.example.android.popularmovies.R;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieViewHolder> {
 
     final private MovieItemClickListener mOnClickListener;
+    private ArrayList<Movie> mMoviesList;
 
     /**
      * Interface for ClickListener
@@ -29,6 +33,12 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     public MovieGridAdapter(MovieItemClickListener listener){
         // I can pass in the movieList or just its size
         mOnClickListener = listener;
+        mMoviesList = new ArrayList<>();
+    }
+
+    public void setMoviesList(ArrayList<Movie> moviesList){
+        mMoviesList = moviesList;
+        notifyDataSetChanged();
     }
 
     /**
@@ -67,7 +77,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
 //        holder.mImage.setImageResource(R.drawable.jamesbond);
         Picasso
                 .get()
-                .load("https://i.imgur.com/tGbaZCY.jpg")
+                .load(mMoviesList.get(position).getPosterUri())
 //                .resize(100,100)
 //                .centerCrop()
                 .into(holder.mImage);
@@ -82,7 +92,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     // Recycler view needs to know how many items in the data to make space for it
     @Override
     public int getItemCount() {
-        return 10;
+        return mMoviesList.size();
     }
 
     /**
@@ -95,7 +105,6 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
             implements View.OnClickListener{
 
         private ImageView mImage;
-
 
         /**
          * Constructor that assigns movieItem xml to viewholder

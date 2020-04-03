@@ -1,5 +1,6 @@
 package com.example.android.popularmovies.Models;
 
+import android.net.Uri;
 import android.widget.ImageView;
 
 import com.example.android.popularmovies.R;
@@ -15,42 +16,48 @@ public class Movie {
     // An image of the movie poster in size w185
     private ImageView mMoviePoster;
 
+    // The poster
+    private Uri mPosterUri;
+
     // The average rating of the movie between 1-10
     private int mVoteAverage;
 
     // The movie's plot as a string
-    private String mPlot;
+    private String mOverview;
 
     public Movie(){
-       // mMoviePoster = findViewById(R.layout.movieposter_item); //TODO: This is what i need to figure out how to do
     }
 
-    public Movie(String title, String releaseDate, ImageView moviePoster, int voteAverage, String plot){
-        mTitle = title;
-        mReleaseDate = releaseDate;
-        mMoviePoster = moviePoster;
-        mVoteAverage = voteAverage;
-        mPlot = plot;
-    }
+//    public Movie(String title, String releaseDate, ImageView moviePoster, int voteAverage, String overview){
+//        mTitle = title;
+//        mReleaseDate = releaseDate;
+//        mMoviePoster = moviePoster;
+//        mVoteAverage = voteAverage;
+//        mOverview = overview;
+//    }
 
     public String getTitle() { return mTitle; }
 
-    public void setTitle(String mTitle) { this.mTitle = mTitle; }
+    public void setTitle(String title) { this.mTitle = title; }
 
     public String getReleaseDate() { return mReleaseDate; }
 
-    public void setReleaseDate(String mReleaseDate) { this.mReleaseDate = mReleaseDate; }
+    public void setReleaseDate(String releaseDate) { this.mReleaseDate = releaseDate; }
 
     public ImageView getMoviePoster() { return mMoviePoster; }
 
-    public void setMoviePoster(ImageView mMoviePoster) { this.mMoviePoster = mMoviePoster; }
+    public void setMoviePoster(ImageView moviePoster) { this.mMoviePoster = moviePoster; }
+
+    public Uri getPosterUri(){return mPosterUri;}
+
+    public void setPosterUri(Uri posterUri){ this.mPosterUri = posterUri; }
 
     public int getVoteAverage() { return mVoteAverage; }
 
-    public void setVoteAverage(int mVoteAverage) { this.mVoteAverage = mVoteAverage; }
+    public void setVoteAverage(int voteAverage) { this.mVoteAverage = voteAverage; }
 
-    public String getPlot() { return mPlot; }
+    public String getOverview() { return mOverview; }
 
-    public void setPlot(String mPlot) { this.mPlot = mPlot; }
+    public void setOverview(String overview) { this.mOverview = overview; }
 
 }

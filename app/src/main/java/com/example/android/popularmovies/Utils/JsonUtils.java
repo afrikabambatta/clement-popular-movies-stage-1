@@ -22,7 +22,7 @@ public class JsonUtils {
     private static final String TITLE = "title";
     private static final String RELEASE_DATE = "release_date";
     private static final String VOTE_AVERAGE = "vote_average";
-    private static final String PLOT = "plot";
+    private static final String OVERVIEW = "overview";
     private static final String POSTER_PATH = "poster_path";
 
     public static ArrayList<Movie> parseMovieJson(String movieListJsonStr) {
@@ -48,18 +48,10 @@ public class JsonUtils {
                 movies.get(i).setTitle(currentMovieObject.optString(TITLE));
                 movies.get(i).setReleaseDate(currentMovieObject.optString(RELEASE_DATE));
                 movies.get(i).setVoteAverage(currentMovieObject.optInt(VOTE_AVERAGE));
-                movies.get(i).setPlot(currentMovieObject.optString(PLOT));
-
-                // build the poster path then use picasso to load it into movie poster
+                movies.get(i).setOverview(currentMovieObject.optString(OVERVIEW)); // TODO: It's not called plot, it's actually called overview
                 Uri posterPath =
                         TheMovieDB.getMoviePosterPath(currentMovieObject.optString(POSTER_PATH));
-
-                Picasso
-                        .get()
-                        .load("http://image.tmdb.org/t/p/w185/5vHssUeVe25bMrof1HyaPyWgaP.jpg")
-                        .into(movies.get(i).getMoviePoster());
-
-
+                movies.get(i).setPosterUri(posterPath);
             }
         } catch (JSONException e){ //
             e.printStackTrace();

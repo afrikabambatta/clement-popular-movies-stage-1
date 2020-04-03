@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.android.popularmovies.Data.TheMovieDB;
@@ -14,6 +16,7 @@ import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.Utils.NetworkUtils;
 import com.example.android.popularmovies.Models.Movie;
 import com.example.android.popularmovies.Utils.JsonUtils;
+import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         // get a handle to the recycler view
         mRecyclerView = findViewById(R.id.rv_movies);
         // give the recycler default layout manager
@@ -45,7 +49,9 @@ public class MainActivity extends AppCompatActivity
         mAdapter = new MovieGridAdapter(this);
         // set the adapter on the recycler
         mRecyclerView.setAdapter(mAdapter);
+
         loadMoviesList();
+
     }
 
     // TODO: Send an intent to start detail activity with an extra data of movie index
@@ -62,6 +68,7 @@ public class MainActivity extends AppCompatActivity
     public void loadMoviesList(){
         // TODO: retrieve the current setting of the spinner then pass it into FetchMoviePoster
         new FetchMoviesTask().execute("popularity");
+
     }
 
     public class FetchMoviesTask extends AsyncTask<String, Void, String> {
@@ -102,7 +109,18 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(String jsonMovieResponse) {
             mMoviesList = JsonUtils.parseMovieJson(jsonMovieResponse);
-            Log.v("test", "done");
+            mAdapter.setMoviesList(mMoviesList);
+//            populatePosterImageViews(mMoviesList);
         }
+
+//        void populatePosterImageViews(ArrayList<Movie> moviesList){
+//            for(int i = 0; i < moviesList.size(); i++){
+//                moviesList.get(i).setMoviePoster((ImageView)findViewById(R.id.iv_movie_poster));
+//                Picasso
+//                        .get()
+//                        .load(moviesList.get(i).getPosterUri())
+//                        .into(moviesList.get(i).getMoviePoster());
+//            }
+//        }
     }
 }
