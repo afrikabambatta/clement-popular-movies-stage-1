@@ -20,6 +20,7 @@ public class NetworkUtils {
         try {
             InputStream in = urlConnection.getInputStream();
 
+            //TODO: Figure out what this going on from a coding standpoint
             Scanner scanner = new Scanner(in);
             scanner.useDelimiter("\\A");
 

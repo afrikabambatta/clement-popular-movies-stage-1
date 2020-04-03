@@ -1,6 +1,7 @@
 package com.example.android.popularmovies.Data;
 
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.net.MalformedURLException;
@@ -73,7 +74,7 @@ public class TheMovieDB {
      */
     private static URL buildMovieListUrl(String sortOrder){
         Uri builtUri = Uri.parse(MOVIE_API_URL).buildUpon()
-                .appendPath(DISCOVER_MOVIE)
+                .appendEncodedPath(DISCOVER_MOVIE)
                 .appendQueryParameter(API_PARAM, API_KEY)
                 .appendQueryParameter(SORT_BY_PARAM, sortOrder)
                 .build();
@@ -92,9 +93,12 @@ public class TheMovieDB {
 
     public static Uri getMoviePosterPath(String posterPath){
 
+        // for some reason the poster path includes '/' so we need to get rid of it to build the uri
+        posterPath = posterPath.substring(1);
+
         Uri posterImageUri = Uri.parse(IMAGE_BASE_URL).buildUpon()
-                .appendPath(SIZE)
-                .appendPath(posterPath)
+                .appendEncodedPath(SIZE)
+                .appendEncodedPath(posterPath)
                 .build();
 
         return posterImageUri;

@@ -1,6 +1,7 @@
 package com.example.android.popularmovies.Utils;
 
 import android.net.Uri;
+import android.widget.ImageView;
 
 import com.example.android.popularmovies.Data.TheMovieDB;
 import com.example.android.popularmovies.Models.Movie;
@@ -24,7 +25,7 @@ public class JsonUtils {
     private static final String PLOT = "plot";
     private static final String POSTER_PATH = "poster_path";
 
-    public static ArrayList<Movie> parseMovieJson(String movieListJsonStr){
+    public static ArrayList<Movie> parseMovieJson(String movieListJsonStr) {
 
         ArrayList<Movie> movies = new ArrayList<Movie>();
 
@@ -55,8 +56,10 @@ public class JsonUtils {
 
                 Picasso
                         .get()
-                        .load(posterPath)
+                        .load("http://image.tmdb.org/t/p/w185/5vHssUeVe25bMrof1HyaPyWgaP.jpg")
                         .into(movies.get(i).getMoviePoster());
+
+
             }
         } catch (JSONException e){ //
             e.printStackTrace();

@@ -2,6 +2,8 @@ package com.example.android.popularmovies.Models;
 
 import android.widget.ImageView;
 
+import com.example.android.popularmovies.R;
+
 public class Movie {
 
     // Movie title in english
@@ -19,7 +21,9 @@ public class Movie {
     // The movie's plot as a string
     private String mPlot;
 
-    public Movie(){}
+    public Movie(){
+       // mMoviePoster = findViewById(R.layout.movieposter_item); //TODO: This is what i need to figure out how to do
+    }
 
     public Movie(String title, String releaseDate, ImageView moviePoster, int voteAverage, String plot){
         mTitle = title;

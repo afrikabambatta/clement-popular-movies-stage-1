@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.android.popularmovies.Data.TheMovieDB;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity
         loadMoviesList();
     }
 
+    // TODO: Send an intent to start detail activity with an extra data of movie index
     @Override
     public void onMovieItemClick(int clickedItemIndex) {
         String toastMessage = "Item #" + (clickedItemIndex + 1) + " clicked.";
@@ -59,10 +61,10 @@ public class MainActivity extends AppCompatActivity
 
     public void loadMoviesList(){
         // TODO: retrieve the current setting of the spinner then pass it into FetchMoviePoster
-        new FetchMoviesTask().execute();
+        new FetchMoviesTask().execute("popularity");
     }
 
-    public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
+    public class FetchMoviesTask extends AsyncTask<String, Void, String> {
 
 //        @Override
 //        protected void onPreExecute() {
@@ -70,14 +72,14 @@ public class MainActivity extends AppCompatActivity
 //        }
 
         @Override
-        protected Void doInBackground(String... filterOption) {
+        protected String doInBackground(String... filterOption) {
 
             URL movieListRequestUrl;
 
             // gets a url that will return a list of movies sorted by popularity
-            if(filterOption.equals("popularity")){
+            if(filterOption[0].equals("popularity")){
                 movieListRequestUrl = TheMovieDB.getMoviesSortedByPopularity();
-            } else if(filterOption.equals("vote_average")){
+            } else if(filterOption[0].equals("vote_average")){
                 movieListRequestUrl = TheMovieDB.getMoviesSortedByVoteAvg();
             } else {
                 return null; //TODO: Fix this default case, throw an exception or something
@@ -89,19 +91,18 @@ public class MainActivity extends AppCompatActivity
                 String jsonMovieResponse = NetworkUtils
                         .getResponseFromHttpUrl(movieListRequestUrl);
 
-                // now take the json string and make a lot of movies out of it
-
-                mMoviesList = JsonUtils.parseMovieJson(jsonMovieResponse);
+                return jsonMovieResponse;
 
             } catch (Exception e) {
                 e.printStackTrace();
+                return null;
             }
-            return null;
         }
 
-//        @Override
-//        protected void onPostExecute(String[] weatherData) {
-//
-//        }
+        @Override
+        protected void onPostExecute(String jsonMovieResponse) {
+            mMoviesList = JsonUtils.parseMovieJson(jsonMovieResponse);
+            Log.v("test", "done");
+        }
     }
 }
