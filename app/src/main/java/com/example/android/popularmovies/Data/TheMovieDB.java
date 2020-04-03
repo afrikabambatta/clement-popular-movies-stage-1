@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.android.popularmovies.Utils.Constants;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -42,7 +44,7 @@ public class TheMovieDB {
     /**
      * API Key used to access The Movie API. MUST REMOVE BEFORE SHARING PROJECT
      */
-    private static final String API_KEY = "2f3abf24b6f86fb6dfbc22b56358cb04";
+    private static final String API_KEY = Constants.API_KEY;
 
     /**
      * Params
