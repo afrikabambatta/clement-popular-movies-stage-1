@@ -10,14 +10,6 @@
         android:id="@+id/iv_movie_poster"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitCenter"
+        android:scaleType="fitXY"
         tools:src="@drawable/jamesbond"/>
-
-    <TextView
-        android:id="@+id/tv_movie_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="24sp"
-        android:text="Movie Name Here" />
 </LinearLayout>
