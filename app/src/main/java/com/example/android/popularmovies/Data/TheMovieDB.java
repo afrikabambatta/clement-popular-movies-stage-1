@@ -1,7 +1,6 @@
 package com.example.android.popularmovies.Data;
 
 import android.net.Uri;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.android.popularmovies.Utils.Constants;

@@ -4,20 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.android.popularmovies.Data.TheMovieDB;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.Utils.NetworkUtils;
 import com.example.android.popularmovies.Models.Movie;
 import com.example.android.popularmovies.Utils.JsonUtils;
-import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,8 +26,6 @@ public class MainActivity extends AppCompatActivity
 
     private ArrayList<Movie> mMoviesList;
 
-    private Toast mToast; // TODO: Delete toasts from the app
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +38,7 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(new GridLayoutManager
                 (this, 2, RecyclerView.VERTICAL, false));
         // let the recycler all viewholders are the same size for optimization
-        //mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(true);
         // create adapter for recycler view and give it dummy data
         mAdapter = new MovieGridAdapter(this);
         // set the adapter on the recycler
@@ -55,31 +48,24 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    // TODO: Send an intent to start detail activity with an extra data of movie index
     @Override
     public void onMovieItemClick(int clickedItemIndex) {
         Intent intent = new Intent(this, DetailActivity.class);
-//        intent = putDetailExtras(intent, clickedItemIndex);
-
-            String title = mMoviesList.get(clickedItemIndex).getTitle();
-            intent.putExtra(DetailActivity.EXTRA_TITLE, title);
-            String posterUrl = mMoviesList.get(clickedItemIndex).getPosterUri().toString();
-            intent.putExtra(DetailActivity.EXTRA_POSTER_URL, posterUrl);
-            String releaseDate = mMoviesList.get(clickedItemIndex).getReleaseDate();
-            intent.putExtra(DetailActivity.EXTRA_RELEASE_DATE, releaseDate);
-            String voteAverage = String.valueOf(mMoviesList.get(clickedItemIndex).getVoteAverage());
-            intent.putExtra(DetailActivity.EXTRA_VOTE_AVERAGE, voteAverage);
-            String overview = mMoviesList.get(clickedItemIndex).getOverview();
-            intent.putExtra(DetailActivity.EXTRA_OVERVIEW, overview);
-
-
+        intent = putDetailExtras(intent, clickedItemIndex);
         startActivity(intent);
     }
 
     public Intent putDetailExtras(Intent intent, int clickedItemIndex){
-
-
-
+        String title = mMoviesList.get(clickedItemIndex).getTitle();
+        intent.putExtra(DetailActivity.EXTRA_TITLE, title);
+        String posterUrl = mMoviesList.get(clickedItemIndex).getPosterUri().toString();
+        intent.putExtra(DetailActivity.EXTRA_POSTER_URL, posterUrl);
+        String releaseDate = mMoviesList.get(clickedItemIndex).getReleaseDate();
+        intent.putExtra(DetailActivity.EXTRA_RELEASE_DATE, releaseDate);
+        String voteAverage = String.valueOf(mMoviesList.get(clickedItemIndex).getVoteAverage());
+        intent.putExtra(DetailActivity.EXTRA_VOTE_AVERAGE, voteAverage);
+        String overview = mMoviesList.get(clickedItemIndex).getOverview();
+        intent.putExtra(DetailActivity.EXTRA_OVERVIEW, overview);
         return intent;
     }
 
@@ -91,10 +77,10 @@ public class MainActivity extends AppCompatActivity
 
     public class FetchMoviesTask extends AsyncTask<String, Void, String> {
 
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
         @Override
         protected String doInBackground(String... filterOption) {
@@ -126,19 +112,12 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(String jsonMovieResponse) {
-            mMoviesList = JsonUtils.parseMovieJson(jsonMovieResponse);
-            mAdapter.setMoviesList(mMoviesList);
-//            populatePosterImageViews(mMoviesList);
-        }
 
-//        void populatePosterImageViews(ArrayList<Movie> moviesList){
-//            for(int i = 0; i < moviesList.size(); i++){
-//                moviesList.get(i).setMoviePoster((ImageView)findViewById(R.id.iv_movie_poster));
-//                Picasso
-//                        .get()
-//                        .load(moviesList.get(i).getPosterUri())
-//                        .into(moviesList.get(i).getMoviePoster());
-//            }
-//        }
+            // parse json string to populate movies list
+            mMoviesList = JsonUtils.parseMovieJson(jsonMovieResponse);
+
+            // pass the adapter the new movies list
+            mAdapter.setMoviesList(mMoviesList);
+        }
     }
 }

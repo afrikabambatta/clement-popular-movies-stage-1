@@ -3,8 +3,6 @@ package com.example.android.popularmovies.Models;
 import android.net.Uri;
 import android.widget.ImageView;
 
-import com.example.android.popularmovies.R;
-
 public class Movie {
 
     // Movie title in english
@@ -26,15 +24,8 @@ public class Movie {
     private String mOverview;
 
     public Movie(){
-    }
 
-//    public Movie(String title, String releaseDate, ImageView moviePoster, int voteAverage, String overview){
-//        mTitle = title;
-//        mReleaseDate = releaseDate;
-//        mMoviePoster = moviePoster;
-//        mVoteAverage = voteAverage;
-//        mOverview = overview;
-//    }
+    }
 
     public String getTitle() { return mTitle; }
 

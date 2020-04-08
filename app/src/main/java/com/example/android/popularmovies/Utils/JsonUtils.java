@@ -1,11 +1,9 @@
 package com.example.android.popularmovies.Utils;
 
 import android.net.Uri;
-import android.widget.ImageView;
 
 import com.example.android.popularmovies.Data.TheMovieDB;
 import com.example.android.popularmovies.Models.Movie;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
