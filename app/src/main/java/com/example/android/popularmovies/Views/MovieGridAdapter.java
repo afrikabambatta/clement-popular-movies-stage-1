@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -73,14 +74,17 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     // When the adapter binds data to the viewholder it calls this passing it position in rv
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        // pass in the position to retrieve movie name at position
-//        holder.mImage.setImageResource(R.drawable.jamesbond);
+        // bind the movie poster image
         Picasso
                 .get()
                 .load(mMoviesList.get(position).getPosterUri())
 //                .resize(100,100)
 //                .centerCrop()
                 .into(holder.mImage);
+
+        // bind the movie name
+        holder.mTitle.setText(mMoviesList.get(position).getTitle());
+
     }
 
     /**
@@ -105,6 +109,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
             implements View.OnClickListener{
 
         private ImageView mImage;
+        private TextView mTitle;
 
         /**
          * Constructor that assigns movieItem xml to viewholder
@@ -114,6 +119,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
         public MovieViewHolder(View itemView){
             super(itemView);
             mImage = itemView.findViewById(R.id.iv_movie_poster);
+            mTitle = itemView.findViewById(R.id.tv_movie_name);
             itemView.setOnClickListener(this);
         }
 

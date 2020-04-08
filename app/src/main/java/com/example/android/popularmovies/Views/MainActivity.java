@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity
-        implements MovieGridAdapter.MovieItemClickListener{
+        implements MovieGridAdapter.MovieItemClickListener {
 
     private RecyclerView mRecyclerView;
     private MovieGridAdapter mAdapter;
@@ -57,15 +58,32 @@ public class MainActivity extends AppCompatActivity
     // TODO: Send an intent to start detail activity with an extra data of movie index
     @Override
     public void onMovieItemClick(int clickedItemIndex) {
-        String toastMessage = "Item #" + (clickedItemIndex + 1) + " clicked.";
-        if(mToast != null)
-            mToast.cancel();
-        mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+        Intent intent = new Intent(this, DetailActivity.class);
+//        intent = putDetailExtras(intent, clickedItemIndex);
 
-        mToast.show();
+            String title = mMoviesList.get(clickedItemIndex).getTitle();
+            intent.putExtra(DetailActivity.EXTRA_TITLE, title);
+            String posterUrl = mMoviesList.get(clickedItemIndex).getPosterUri().toString();
+            intent.putExtra(DetailActivity.EXTRA_POSTER_URL, posterUrl);
+            String releaseDate = mMoviesList.get(clickedItemIndex).getReleaseDate();
+            intent.putExtra(DetailActivity.EXTRA_RELEASE_DATE, releaseDate);
+            String voteAverage = String.valueOf(mMoviesList.get(clickedItemIndex).getVoteAverage());
+            intent.putExtra(DetailActivity.EXTRA_VOTE_AVERAGE, voteAverage);
+            String overview = mMoviesList.get(clickedItemIndex).getOverview();
+            intent.putExtra(DetailActivity.EXTRA_OVERVIEW, overview);
+
+
+        startActivity(intent);
     }
 
-    public void loadMoviesList(){
+    public Intent putDetailExtras(Intent intent, int clickedItemIndex){
+
+
+
+        return intent;
+    }
+
+    public void loadMoviesList() {
         // TODO: retrieve the current setting of the spinner then pass it into FetchMoviePoster
         new FetchMoviesTask().execute("popularity");
 
@@ -84,9 +102,9 @@ public class MainActivity extends AppCompatActivity
             URL movieListRequestUrl;
 
             // gets a url that will return a list of movies sorted by popularity
-            if(filterOption[0].equals("popularity")){
+            if (filterOption[0].equals("popularity")) {
                 movieListRequestUrl = TheMovieDB.getMoviesSortedByPopularity();
-            } else if(filterOption[0].equals("vote_average")){
+            } else if (filterOption[0].equals("vote_average")) {
                 movieListRequestUrl = TheMovieDB.getMoviesSortedByVoteAvg();
             } else {
                 return null; //TODO: Fix this default case, throw an exception or something
