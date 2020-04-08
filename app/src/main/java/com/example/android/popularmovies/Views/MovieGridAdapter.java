@@ -78,8 +78,6 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
         Picasso
                 .get()
                 .load(mMoviesList.get(position).getPosterUri())
-//                .resize(100,100)
-//                .centerCrop()
                 .into(holder.mImage);
 
     }

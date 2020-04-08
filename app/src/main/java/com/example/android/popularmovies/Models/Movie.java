@@ -20,7 +20,7 @@ public class Movie {
     private Uri mPosterUri;
 
     // The average rating of the movie between 1-10
-    private int mVoteAverage;
+    private int mVoteAverage; //TODO: Should be a float
 
     // The movie's plot as a string
     private String mOverview;

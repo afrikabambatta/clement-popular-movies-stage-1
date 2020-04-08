@@ -39,7 +39,8 @@ public class TheMovieDB {
      * size - the second component of the query
      * the size of the movie poster image, we will be using w185
      */
-    private static final String SIZE = "w185";
+//    private static final String SIZE = "w185";
+    private static final String SIZE = "w342";
 
     /**
      * API Key used to access The Movie API. MUST REMOVE BEFORE SHARING PROJECT
