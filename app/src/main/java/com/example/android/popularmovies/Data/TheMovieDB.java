@@ -93,7 +93,7 @@ public class TheMovieDB {
         return url;
     }
 
-    public static Uri getMoviePosterPath(String posterPath){
+    public static String getMoviePosterPath(String posterPath){
 
         // for some reason the poster path includes '/' so we need to get rid of it to build the uri
         posterPath = posterPath.substring(1);
@@ -103,7 +103,7 @@ public class TheMovieDB {
                 .appendEncodedPath(posterPath)
                 .build();
 
-        return posterImageUri;
+        return posterImageUri.toString();
     }
 
 }

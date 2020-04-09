@@ -1,7 +1,5 @@
 package com.example.android.popularmovies.Utils;
 
-import android.net.Uri;
-
 import com.example.android.popularmovies.Data.TheMovieDB;
 import com.example.android.popularmovies.Models.Movie;
 
@@ -45,11 +43,11 @@ public class JsonUtils {
                 // from that json object fill the movie with the appropriate data
                 movies.get(i).setTitle(currentMovieObject.optString(TITLE));
                 movies.get(i).setReleaseDate(currentMovieObject.optString(RELEASE_DATE));
-                movies.get(i).setVoteAverage(currentMovieObject.optInt(VOTE_AVERAGE));
-                movies.get(i).setOverview(currentMovieObject.optString(OVERVIEW)); // TODO: It's not called plot, it's actually called overview
-                Uri posterPath =
+                movies.get(i).setVoteAverage((currentMovieObject.optDouble(VOTE_AVERAGE)));
+                movies.get(i).setOverview(currentMovieObject.optString(OVERVIEW));
+                String posterPath =
                         TheMovieDB.getMoviePosterPath(currentMovieObject.optString(POSTER_PATH));
-                movies.get(i).setPosterUri(posterPath);
+                movies.get(i).setPosterPath(posterPath);
             }
         } catch (JSONException e){ //
             e.printStackTrace();

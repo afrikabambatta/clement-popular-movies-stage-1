@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity
 
         // put the poster url
         intent.putExtra(DetailActivity.EXTRA_POSTER_URL,
-                mMoviesList.get(clickedItemIndex).getPosterUri().toString());
+                mMoviesList.get(clickedItemIndex).getPosterPath().toString());
 
         // put the release date
         intent.putExtra(DetailActivity.EXTRA_RELEASE_DATE,
