@@ -13,15 +13,19 @@
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:textSize="36sp"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:padding="@dimen/small_padding"
+            android:textColor="@color/whiteText"
+            android:textSize="@dimen/title_text"
             android:textStyle="bold"
             tools:text="John Wick" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorSecondary"
+            android:layout_marginBottom="@dimen/med_margin"
             android:orientation="horizontal">
 
             <ImageView
@@ -31,7 +35,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:padding="16dp"
+                android:padding="@dimen/med_padding"
                 tools:src="@drawable/johnwick" />
 
             <LinearLayout
@@ -41,24 +45,62 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_vote_avg"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:textSize="60sp"
-                    tools:text="7" />
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
 
-                <TextView
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|center_horizontal"
+                        android:gravity="center"
+                        android:text="@string/vote_average"
+                        android:textColor="@color/whiteText"
+                        android:textSize="@dimen/header_text"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_vote_avg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center"
+                        android:textColor="@color/whiteText"
+                        android:textSize="@dimen/vote_text"
+                        tools:text="7" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top|center_horizontal"
-                    android:gravity="center"
-                    android:text="User Rating:"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/med_margin"
+                        android:gravity="center_horizontal"
+                        android:text="@string/release_date"
+                        android:textColor="@color/whiteText"
+                        android:textSize="@dimen/header_text"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_release_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/med_margin"
+                        android:layout_marginBottom="@dimen/med_margin"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/whiteText"
+                        android:textSize="@dimen/header_text"
+                        tools:text="2019-01-24" />
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
@@ -66,36 +108,21 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:text="Released"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_release_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="16dp"
-            android:textSize="24sp"
-            tools:text="2019-01-24" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:text="Overview"
-            android:textSize="24sp"
+            android:layout_marginRight="@dimen/med_margin"
+            android:layout_marginLeft="@dimen/med_margin"
+            android:text="@string/overview"
+            android:textSize="@dimen/header_text"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_overview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:textSize="24sp"
+            android:layout_marginRight="@dimen/med_margin"
+            android:layout_marginLeft="@dimen/med_margin"
+            android:layout_marginBottom="@dimen/med_margin"
+            android:textSize="@dimen/body_text"
             tools:text="This is a story of a retired man who get's woken up by bad guys he blasts them to smithreens. I hear his dog dies and the gun actionin this movie is top notch. Imagine a modern day technology of the matrix where the action is so good you can't help but enjoy the sequence" />
-
 
     </LinearLayout>
 

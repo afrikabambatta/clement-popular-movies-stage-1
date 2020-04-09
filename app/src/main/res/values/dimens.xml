@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="body_text">16sp</dimen>
+    <dimen name="header_text">24sp</dimen>
+    <dimen name="title_text">34sp</dimen>
+    <dimen name="vote_text">60sp</dimen>
+
+    <dimen name="small_padding">8dp</dimen>
+    <dimen name="med_padding">16dp</dimen>
+    <dimen name="med_margin">16dp</dimen>
+</resources>
