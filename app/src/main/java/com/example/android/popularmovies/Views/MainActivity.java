@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity
      */
     public void loadMoviesList() {
         // TODO: retrieve the current setting of the spinner then pass it into FetchMoviePoster
-        new FetchMoviesTask().execute("popularity");
+        new FetchMoviesTask().execute(TheMovieDB.POPULARITY_DESCENDING);
 
     }
 
@@ -138,12 +138,12 @@ public class MainActivity extends AppCompatActivity
         }
 
         /**
-         * Makes an HTTP request that returns a json object sorted by movie popularity or
-         * vote average
+         * Makes an HTTP request that returns a json string containing a movie list sorted
+         * by movie popularity or vote average
          *
          * @param filterOption Determines whether movies should be sorted by popularity or vote
          *                     average
-         * @return A string representing a json object that holds data to a sorted list of movies
+         * @return A string representing a json array that holds data to a sorted list of movies
          */
         @Override
         protected String doInBackground(String... filterOption) {
@@ -153,19 +153,19 @@ public class MainActivity extends AppCompatActivity
             /*
              * Creates a url based on the filter option: popularity or vote average
              */
-            if (filterOption[0].equals("popularity")) {
-                movieListRequestUrl = TheMovieDB.getMoviesSortedByPopularity();
-            } else if (filterOption[0].equals("vote_average")) {
-                movieListRequestUrl = TheMovieDB.getMoviesSortedByVoteAvg();
+            if (filterOption[0].equals(TheMovieDB.POPULARITY_DESCENDING)) {
+                movieListRequestUrl = TheMovieDB.buildMovieListUrl(TheMovieDB.POPULARITY_DESCENDING);
+            } else if (filterOption[0].equals(TheMovieDB.VOTE_AVG_DESCENDING)) {
+                movieListRequestUrl = TheMovieDB.buildMovieListUrl(TheMovieDB.VOTE_AVG_DESCENDING);
             } else {
-                // defaults to popularity sort
-                movieListRequestUrl = TheMovieDB.getMoviesSortedByPopularity();
+                // defaults to popularity sort and gives a warning
+                movieListRequestUrl = TheMovieDB.buildMovieListUrl(TheMovieDB.POPULARITY_DESCENDING);
                 Log.w("MainActivity", "Movie sort was forced to default to popularity");
             }
 
             /*
              * Use the generated url to make an http request to TheMovieDB API and return
-             * a string representation of a json object containing a sorted movie list
+             * a string representation of a json array containing a sorted movie list
              */
             try {
                 String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieListRequestUrl);
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity
          * Takes the json object that was queried in the background and parses it to populate
          * the movies list stored in mMoviesList
          *
-         * @param jsonMovieResponse The string json object retrieved from the background task
+         * @param jsonMovieResponse The json string produced as a result of the background task
          */
         @Override
         protected void onPostExecute(String jsonMovieResponse) {

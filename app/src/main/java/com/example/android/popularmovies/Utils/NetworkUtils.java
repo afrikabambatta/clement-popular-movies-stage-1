@@ -6,6 +6,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+/**
+ * Utility class used to make an HTTP request.
+ * In this project it is used to query TheMovieDB API for a json string containing movie list info.
+ */
 public class NetworkUtils {
 
     /**
@@ -20,7 +24,6 @@ public class NetworkUtils {
         try {
             InputStream in = urlConnection.getInputStream();
 
-            //TODO: Figure out what this going on from a coding standpoint
             Scanner scanner = new Scanner(in);
             scanner.useDelimiter("\\A");
 

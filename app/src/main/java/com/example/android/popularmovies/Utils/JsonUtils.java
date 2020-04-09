@@ -9,10 +9,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Json utility class dedicated to parsing the json string returned from TheMovieDB API. It will
+ * parse the json and return a list of movies and their information.
+ */
 public class JsonUtils {
 
-    /**
-     * The Movie API name value pairs
+    /*
+     * List of constants for TheMovieDB API name value pairs
      */
     private static final String RESULTS = "results";
     private static final String TITLE = "title";
@@ -21,32 +25,40 @@ public class JsonUtils {
     private static final String OVERVIEW = "overview";
     private static final String POSTER_PATH = "poster_path";
 
+    /**
+     * Parses the json string received from the http request to TheMovieDB API. Will produce an
+     * array list of movies resulted form the json string.
+     *
+     * @param movieListJsonStr
+     * @return
+     */
     public static ArrayList<Movie> parseMovieJson(String movieListJsonStr) {
 
         ArrayList<Movie> movies = new ArrayList<Movie>();
 
         try {
-            // make the json string we passed into the function into a json object
-            JSONObject originalJson = new JSONObject(movieListJsonStr);
+            // get the json object from the json string passed into this function
+            JSONObject originalJsonObject = new JSONObject(movieListJsonStr);
 
-            // get the results array from the json object
-            JSONArray resultsJsonArray = originalJson.optJSONArray(RESULTS);
+            // get the movie results array from the json object
+            JSONArray resultsJsonArray = originalJsonObject.optJSONArray(RESULTS);
 
-            // make movie objects equal to the size of the results array
+            // extract information from the json array and use it to make movie objects
             for (int i = 0; i < resultsJsonArray.length(); i++) {
+
                 // add a new movie for every index in the results array
                 movies.add(new Movie());
 
                 // get the movie at the current index and turn it into an json object
                 JSONObject currentMovieObject = resultsJsonArray.optJSONObject(i);
 
-                // from that json object fill the movie with the appropriate data
+                // use the json object to fill the movie with the appropriate data
                 movies.get(i).setTitle(currentMovieObject.optString(TITLE));
                 movies.get(i).setReleaseDate(currentMovieObject.optString(RELEASE_DATE));
                 movies.get(i).setVoteAverage((currentMovieObject.optDouble(VOTE_AVERAGE)));
                 movies.get(i).setOverview(currentMovieObject.optString(OVERVIEW));
                 String posterPath =
-                        TheMovieDB.getMoviePosterPath(currentMovieObject.optString(POSTER_PATH));
+                        TheMovieDB.buildMoviePosterPath(currentMovieObject.optString(POSTER_PATH));
                 movies.get(i).setPosterPath(posterPath);
             }
         } catch (JSONException e){ //

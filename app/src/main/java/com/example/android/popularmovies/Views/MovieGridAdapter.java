@@ -15,9 +15,16 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+/**
+ * This class is needed to create the grid recycler view in MainActivity. It adapts information
+ * from an array list of movies, using it to create viewholders each containg an image view of a
+ * movie poster.
+ */
 public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieViewHolder> {
 
     final private MovieItemClickListener mOnClickListener;
+
+    // this private movie list variable will contain the movie list extract from TheMovieDB
     private ArrayList<Movie> mMoviesList;
 
     /**
@@ -26,36 +33,44 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     public interface MovieItemClickListener {
         void onMovieItemClick(int clickedItemIndex);
     }
+
     /**
-    * Constructor for Adapter
-    *
-    */
+     4* The constructor which initializes the listener and movie list
+     *
+     * @param listener
+     */
     public MovieGridAdapter(MovieItemClickListener listener){
-        // I can pass in the movieList or just its size
         mOnClickListener = listener;
         mMoviesList = new ArrayList<>();
     }
 
+    /**
+     *
+     * @param moviesList
+     */
     public void setMoviesList(ArrayList<Movie> moviesList){
         mMoviesList = moviesList;
         notifyDataSetChanged();
     }
 
     /**
-     * This method basically inflates the viewholder
+     * This function creates the each viewholder using the layout movieposter_item
      *
-     * @param viewGroup
-     * @param viewType
-     * @return
+     * @param viewGroup The view group that called this function
+     * @param viewType ?
+     * @return A movie viewholder which in this case is an image view containing a movie poster
      */
 
     @NonNull
     @Override
-    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public MovieViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+
         // Get the context of the application
         Context context = viewGroup.getContext();
+
         // Create an inflater in this context
         LayoutInflater inflater = LayoutInflater.from(context);
+
         // Use the inflater to inflate the movieposter_item in viewGroup
         View view = inflater.inflate(R.layout.movieposter_item, viewGroup, false);
 
@@ -64,21 +79,19 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     }
 
     /**
-     * Recycler view calls when new data needs to be binded to the viewholder
+     * The Recycler class calls this to bind data to the viewholder as they get recycled
      *
-     * @param holder
-     * @param position
+     * @param holder The movie viewholder that will be binded with data
+     * @param position The index of the movie in the mMoviesList that will supply the data to bind
      */
 
-    // When the adapter binds data to the viewholder it calls this passing it position in rv
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        // bind the movie poster image
+        // Use picasso to bind a movie poster to the image view in the viewholder
         Picasso
                 .get()
                 .load(mMoviesList.get(position).getPosterPath())
-                .into(holder.mImage);
-
+                .into(holder.mMoviePoster);
     }
 
     /**
@@ -87,7 +100,12 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
      * @return
      */
 
-    // Recycler view needs to know how many items in the data to make space for it
+    /**
+     * Returns the total number of items the recycler view needs to display given the list of
+     * movies returned from TheMovieDB API.
+     *
+     * @return The total number of movies in the movie list returned from TheMovieDB API
+     */
     @Override
     public int getItemCount() {
         return mMoviesList.size();
@@ -98,33 +116,36 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
      *
      */
 
-    // Nested viewholder class because only used within this adapter
+    /**
+     * This nested class defines a movie viewholder that is only compatible with this adapter.
+     */
     class MovieViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener{
 
-        private ImageView mImage;
+
+        private ImageView mMoviePoster;
 
         /**
-         * Constructor that assigns movieItem xml to viewholder
+         * Constructor that assigns the image view to viewholder
          *
-         * @param itemView
+         * @param itemView The movie viewholder view
          */
         public MovieViewHolder(View itemView){
             super(itemView);
-            mImage = itemView.findViewById(R.id.iv_movie_poster);
+            mMoviePoster = itemView.findViewById(R.id.iv_movie_poster);
             itemView.setOnClickListener(this);
         }
 
         /**
-         * Clicklistener function that helps Recycler know which viewholder was clicked
+         * Clicklistener function that helps Recycler know which viewholder was clicked by
+         * using the position returned by the adapter when it's clicked
          *
-         * @param view
+         * @param view The viewholder that was clicked
          */
         @Override
         public void onClick(View view) {
             int clickedPosition = getAdapterPosition();
             mOnClickListener.onMovieItemClick(clickedPosition);
-
         }
     }
 }
