@@ -37,31 +37,40 @@ public class JsonUtils {
         ArrayList<Movie> movies = new ArrayList<Movie>();
 
         try {
-            // get the json object from the json string passed into this function
+            // Get the json object from the json string passed into this function
             JSONObject originalJsonObject = new JSONObject(movieListJsonStr);
 
-            // get the movie results array from the json object
+            // Get the movie results array from the json object
             JSONArray resultsJsonArray = originalJsonObject.optJSONArray(RESULTS);
 
-            // extract information from the json array and use it to make movie objects
+            // Extract information from the json array and use it to make movie objects
             for (int i = 0; i < resultsJsonArray.length(); i++) {
 
-                // add a new movie for every index in the results array
+                // Add a new movie for every index in the results array
                 movies.add(new Movie());
 
-                // get the movie at the current index and turn it into an json object
+                // Get the movie at the current index and turn it into an json object
                 JSONObject currentMovieObject = resultsJsonArray.optJSONObject(i);
 
-                // use the json object to fill the movie with the appropriate data
+                /*
+                 * Use the json object to fill the movie with the appropriate data
+                 */
                 movies.get(i).setTitle(currentMovieObject.optString(TITLE));
                 movies.get(i).setReleaseDate(currentMovieObject.optString(RELEASE_DATE));
                 movies.get(i).setVoteAverage((currentMovieObject.optDouble(VOTE_AVERAGE)));
                 movies.get(i).setOverview(currentMovieObject.optString(OVERVIEW));
-                String posterPath =
-                        TheMovieDB.buildMoviePosterPath(currentMovieObject.optString(POSTER_PATH));
-                movies.get(i).setPosterPath(posterPath);
+                /*
+                 * If there is no movie poster path, then set it to null
+                 */
+                if (currentMovieObject.optString(POSTER_PATH).equals("null")){
+                    movies.get(i).setPosterPath(null);
+                } else {
+                    String posterPath =
+                            TheMovieDB.buildMoviePosterPath(currentMovieObject.optString(POSTER_PATH));
+                    movies.get(i).setPosterPath(posterPath);
+                }
             }
-        } catch (JSONException e){ //
+        } catch (JSONException e) { //
             e.printStackTrace();
         }
         return movies;

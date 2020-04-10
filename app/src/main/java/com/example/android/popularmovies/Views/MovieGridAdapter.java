@@ -24,7 +24,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
 
     final private MovieItemClickListener mOnClickListener;
 
-    // this private movie list variable will contain the movie list extract from TheMovieDB
+    // This private movie list variable will contain the movie list extract from TheMovieDB
     private ArrayList<Movie> mMoviesList;
 
     /**
@@ -45,11 +45,14 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     }
 
     /**
+     * Must be called when the movie list changes. Let's the recycler view know how to
+     * display the new data set.
      *
-     * @param moviesList
+     * @param moviesList A list of movies containing basic information
      */
     public void setMoviesList(ArrayList<Movie> moviesList){
-        mMoviesList = moviesList;
+        mMoviesList.clear();
+        mMoviesList.addAll(moviesList);
         notifyDataSetChanged();
     }
 
@@ -87,18 +90,24 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        // Use picasso to bind a movie poster to the image view in the viewholder
-        Picasso
-                .get()
-                .load(mMoviesList.get(position).getPosterPath())
-                .into(holder.mMoviePoster);
+        /*
+         * Use picasso to bind a movie poster to the image view in the viewholder
+         * If the movie does not contain a poster path, use the default poster in drawables
+         */
+        if(mMoviesList.get(position).getPosterPath() == null
+                || mMoviesList.get(position).getPosterPath().isEmpty()){
+            Picasso
+                    .get()
+                    .load(R.drawable.unavailable)
+                    .into(holder.mMoviePoster);
+        }
+        else {
+            Picasso
+                    .get()
+                    .load(mMoviesList.get(position).getPosterPath())
+                    .into(holder.mMoviePoster);
+        }
     }
-
-    /**
-     * Returns the total items in data. Needed by recycler view to know how many items to display.
-     *
-     * @return
-     */
 
     /**
      * Returns the total number of items the recycler view needs to display given the list of
@@ -110,11 +119,6 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     public int getItemCount() {
         return mMoviesList.size();
     }
-
-    /**
-     * Class definition for view holder. Also, implements a ClickListener for interaction
-     *
-     */
 
     /**
      * This nested class defines a movie viewholder that is only compatible with this adapter.

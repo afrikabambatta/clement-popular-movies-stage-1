@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.android.popularmovies.Data.TheMovieDB;
 import com.example.android.popularmovies.R;
@@ -40,25 +43,64 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // get a handle to the recycler view
+        // Get a handle to the recycler view
         mRecyclerView = findViewById(R.id.rv_movies);
 
-        // apply a 2 column grid layout manager to the recycler view
+        // Apply a 2 column grid layout manager to the recycler view
         mRecyclerView.setLayoutManager(new GridLayoutManager
                 (this, 2, RecyclerView.VERTICAL, false));
 
-        // let the recycler view know viewholders are a fixed size to boost performance
+        // Let the recycler view know viewholders are a fixed size to boost performance
         mRecyclerView.setHasFixedSize(true);
 
-        // create a movie adapter for the recycler view
+        // Create a movie adapter for the recycler view
         mAdapter = new MovieGridAdapter(this);
 
-        // set the movie adapter on the recycler view
+        // Set the movie adapter on the recycler view
         mRecyclerView.setAdapter(mAdapter);
 
-        // method used to fetch and create list of movies using TheMovieDB API
-        loadMoviesList();
+        // Method used to fetch and create list of movies using TheMovieDB API TODO: Default to popularity
+        loadMoviesList(TheMovieDB.POPULARITY_DESCENDING);
+    }
 
+    /**
+     * Setup the options menu
+     *
+     * @param menu The menu to be created
+     * @return Returns true if options menu is created
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Use AppCompatActivity's method getMenuInflater to get a handle on the menu inflater
+        MenuInflater inflater = getMenuInflater();
+
+        // Use the inflater's inflate method to inflate our menu layout to this menu
+        inflater.inflate(R.menu.main, menu);
+
+        // Return true so that the menu is displayed in the Toolbar
+        return true;
+    }
+
+    /**
+     * Called when an option item is selected
+     *
+     * @param item The menu item that was selected.
+     * @return Return false to allow normal menu processing to
+     *         proceed, true to consume it here.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_sort_by_popularity) {
+            loadMoviesList(TheMovieDB.POPULARITY_DESCENDING);
+        }
+        else if(id == R.id.action_sort_by_rating){
+            loadMoviesList(TheMovieDB.VOTE_AVG_DESCENDING);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -73,7 +115,7 @@ public class MainActivity extends AppCompatActivity
     public void onMovieItemClick(int clickedItemIndex) {
         Intent intent = new Intent(this, DetailActivity.class);
 
-        // calls a function to put all the extras needed to populate the detail activity
+        // Calls a function to put all the extras needed to populate the detail activity
         intent = putDetailExtras(intent, clickedItemIndex);
 
         startActivity(intent);
@@ -89,23 +131,23 @@ public class MainActivity extends AppCompatActivity
      */
     public Intent putDetailExtras(Intent intent, int clickedItemIndex){
 
-        // put the title
+        // Put the title
         intent.putExtra(DetailActivity.EXTRA_TITLE,
                 mMoviesList.get(clickedItemIndex).getTitle());
 
-        // put the poster url
+        // Put the poster url
         intent.putExtra(DetailActivity.EXTRA_POSTER_URL,
-                mMoviesList.get(clickedItemIndex).getPosterPath().toString());
+                mMoviesList.get(clickedItemIndex).getPosterPath());
 
-        // put the release date
+        // Put the release date
         intent.putExtra(DetailActivity.EXTRA_RELEASE_DATE,
                 mMoviesList.get(clickedItemIndex).getReleaseDate());
 
-        // put the vote average, converted to string because textviews require strings
+        // Put the vote average, converted to string because textviews require strings
         intent.putExtra(DetailActivity.EXTRA_VOTE_AVERAGE,
                 String.valueOf(mMoviesList.get(clickedItemIndex).getVoteAverage()));
 
-        // put the overview
+        // Put the overview
         intent.putExtra(DetailActivity.EXTRA_OVERVIEW,
                 mMoviesList.get(clickedItemIndex).getOverview());
 
@@ -116,10 +158,20 @@ public class MainActivity extends AppCompatActivity
      * Call function to fetch the movie list from TheMovieDB API. The movie list returned is
      * dependent on the state of the spinner: popularity or vote average (descending order)
      */
-    public void loadMoviesList() {
-        // TODO: retrieve the current setting of the spinner then pass it into FetchMoviePoster
-        new FetchMoviesTask().execute(TheMovieDB.POPULARITY_DESCENDING);
+    public void loadMoviesList(String sortOrder) {
 
+        // Get movies from TheMovieDB API
+        new FetchMoviesTask().execute(sortOrder);
+
+        // Change the title to match the sort order
+        if(sortOrder.equals(TheMovieDB.POPULARITY_DESCENDING)) {
+            setTitle(R.string.title_popular);
+        } else if(sortOrder.equals(TheMovieDB.VOTE_AVG_DESCENDING)){
+            setTitle(R.string.title_vote_average);
+        }
+
+        // Make the app scroll back to the top of the list every time sort order is changed
+        mRecyclerView.smoothScrollToPosition(0);
     }
 
     /**
@@ -185,11 +237,13 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(String jsonMovieResponse) {
 
-            // parse json string to populate movies list
+            // Parse json string to populate movies list
             mMoviesList = JsonUtils.parseMovieJson(jsonMovieResponse);
 
-            // notify the adapter that the movie list has changed
+            // Notify the adapter that the movie list has changed
             mAdapter.setMoviesList(mMoviesList);
+
+
         }
     }
 }

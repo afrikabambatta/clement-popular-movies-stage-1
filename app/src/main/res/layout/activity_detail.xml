@@ -36,6 +36,7 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:padding="@dimen/med_padding"
+                android:src="@drawable/unavailable"
                 tools:src="@drawable/johnwick" />
 
             <LinearLayout

@@ -1,14 +1,15 @@
 Rubric Checklist
-WIP: Movies are displayed in the main layout via a grid of their corresponding movie poster thumbnails.
-WIP: UI contains an element (i.e a spinner or settings menu) to toggle the sort order of the movies by: most popular, highest rated.
-WIP: UI contains a screen for displaying the details for a selected movie.
-WIP: Movie details layout contains title, release date, movie poster, vote average, and plot synopsis.
-WIP: When a user changes the sort criteria (“most popular and highest rated”) the main view gets updated correctly.
-WIP: When a movie poster thumbnail is selected, the movie details screen is launched.
-WIP: In a background thread, app queries the /movie/popular or /movie/top_rated API for the sort criteria specified in the settings menu.
+DONE: Movies are displayed in the main layout via a grid of their corresponding movie poster thumbnails.
+DONE: UI contains an element (i.e a spinner or settings menu) to toggle the sort order of the movies by: most popular, highest rated.
+DONE: UI contains a screen for displaying the details for a selected movie.
+DONE: Movie details layout contains title, release date, movie poster, vote average, and plot synopsis.
+DONE: When a user changes the sort criteria (“most popular and highest rated”) the main view gets updated correctly.
+DONE: When a movie poster thumbnail is selected, the movie details screen is launched.
+DONE: In a background thread, app queries the /movie/popular or /movie/top_rated API for the sort criteria specified in the settings menu.
 
-[HARD] - Movies are displayed in the main layout via a grid of their corresponding movie poster thumbnails.
-- When a movie poster thumbnail is selected, the movie details screen is launched.
+✓[HARD]
+✓ - Movies are displayed in the main layout via a grid of their corresponding movie poster thumbnails.
+✓ - When a movie poster thumbnail is selected, the movie details screen is launched.
 ✓ GRID(1): setup a recycler grid layout for activity_main.xml, use stub images for now
     ✓ recyclerview
     ✓ adapterview
@@ -16,25 +17,28 @@ WIP: In a background thread, app queries the /movie/popular or /movie/top_rated 
     ✓ clicklistener
     ✓ itemCount()
 ✓ GRID(2): hook up query task to populate grid layout with movie posters from movieDB
-GRID(3): when movie poster is clicked, send intent to detailsactivity
+✓ GRID(3): when movie poster is clicked, send intent to detailsactivity
 
-[MED]In a background thread, app queries the /movie/popular or /movie/top_rated API for the sort criteria specified in the settings menu.
+[MED]
+✓ - In a background thread, app queries the /movie/popular or /movie/top_rated API for the sort criteria specified in the settings menu.
 ✓ QUERY(1): Acquire API Key from movieDB and digest the API
 ✓ QUERY(2): Create query class of some sort as a utility class that queries the API using AsyncTask
-QUERY(3): Use URI builder to setup query for popular and top-rated movies, return ordered list
+✓ QUERY(3): Use URI builder to setup query for popular and top-rated movies, return ordered list
     of movie name and cover image
 ✓ QUERY(4): Figure out how to use picasso to get images into the app
 
-[MED] UI contains an element (i.e a spinner or settings menu) to toggle the sort order of the movies by: most popular, highest rated.
-- When a user changes the sort criteria (“most popular and highest rated”) the main view gets updated correctly.
+[MED]
+✓ - UI contains an element (i.e a spinner or settings menu) to toggle the sort order of the movies by: most popular, highest rated.
+✓ - When a user changes the sort criteria (“most popular and highest rated”) the main view gets updated correctly.
 SORT(1): Create a spinner for most popular and highest rated in toolbar (forgot what it was called)
 SORT(2): Use datasetchange(), orderchange() etc, to update the movie grid when spinner is used
 
-[EASY] UI contains a screen for displaying the details for a selected movie.
-- Movie details layout contains title, release date, movie poster, vote average, and plot synopsis.
-DETAILS(1): create layout for movie details activity
-    - linear vertical layout
-DETAILS(2): Use query class to get information from movieDB and use picasso to place images
+✓ [EASY]
+✓ - UI contains a screen for displaying the details for a selected movie.
+✓ - Movie details layout contains title, release date, movie poster, vote average, and plot synopsis.
+✓ DETAILS(1): create layout for movie details activity
+   ✓ - linear vertical layout
+✓ DETAILS(2): Use query class to get information from movieDB and use picasso to place images
 
 
 

@@ -13,19 +13,19 @@ import java.net.URL;
  */
 public class TheMovieDB {
 
-    // param to sort movies by popularity in descending order
+    // Param to sort movies by popularity in descending order
     public static final String POPULARITY_DESCENDING = "popularity.desc";
 
-    // param to sort movies by ratings in descending order
+    // Param to sort movies by ratings in descending order
     public static final String VOTE_AVG_DESCENDING = "vote_average.desc";
 
-    // log cat tag for debugging
+    // Log cat tag for debugging
     private static final String TAG = TheMovieDB.class.getSimpleName();
 
-    // the movie api website url
+    // The movie api website url
     private static final String MOVIE_API_URL = "https://api.themoviedb.org/3/";
 
-    // the url component to access movies by popularity
+    // The url component to access movies by popularity
     private static final String DISCOVER_MOVIE = "discover/movie";
 
     /**

@@ -3,4 +3,7 @@
     <string name="overview">Overview</string>
     <string name="vote_average">User Rating</string>
     <string name="release_date">Released</string>
+    <string name="intent_error_msg">Movie data not available</string>
+    <string name="title_vote_average">Top Rated</string>
+    <string name="title_popular">Most Popular</string>
 </resources>
