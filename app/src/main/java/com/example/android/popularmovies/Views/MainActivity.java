@@ -29,6 +29,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity
         implements MovieGridAdapter.MovieItemClickListener {
 
+    private static final String TAG = "MainActivity";
+
     private RecyclerView mRecyclerView;
     private MovieGridAdapter mAdapter;
     private ArrayList<Movie> mMoviesList;
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         // Set the movie adapter on the recycler view
         mRecyclerView.setAdapter(mAdapter);
 
-        // Method used to fetch and create list of movies using TheMovieDB API TODO: Default to popularity
+        // Method used to fetch and create list of movies using TheMovieDB API
         loadMoviesList(TheMovieDB.POPULARITY_DESCENDING);
     }
 
@@ -93,11 +95,17 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_sort_by_popularity) {
-            loadMoviesList(TheMovieDB.POPULARITY_DESCENDING);
-        }
-        else if(id == R.id.action_sort_by_rating){
-            loadMoviesList(TheMovieDB.VOTE_AVG_DESCENDING);
+        switch (id){
+            case R.id.action_sort_by_popularity:
+                loadMoviesList(TheMovieDB.POPULARITY_DESCENDING);
+                break;
+            case R.id.action_sort_by_rating:
+                loadMoviesList(TheMovieDB.VOTE_AVG_DESCENDING);
+                break;
+            default: // Default to popularity sort in case none was specified
+                loadMoviesList(TheMovieDB.POPULARITY_DESCENDING);
+                break;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -212,7 +220,7 @@ public class MainActivity extends AppCompatActivity
             } else {
                 // defaults to popularity sort and gives a warning
                 movieListRequestUrl = TheMovieDB.buildMovieListUrl(TheMovieDB.POPULARITY_DESCENDING);
-                Log.w("MainActivity", "Movie sort was forced to default to popularity");
+                Log.d(TAG, "Movie sort was forced to default to popularity");
             }
 
             /*

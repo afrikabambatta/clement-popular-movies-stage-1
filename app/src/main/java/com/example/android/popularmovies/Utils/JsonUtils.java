@@ -70,7 +70,7 @@ public class JsonUtils {
                     movies.get(i).setPosterPath(posterPath);
                 }
             }
-        } catch (JSONException e) { //
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return movies;

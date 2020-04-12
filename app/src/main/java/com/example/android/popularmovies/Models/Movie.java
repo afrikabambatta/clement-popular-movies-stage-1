@@ -55,7 +55,13 @@ public class Movie {
     /**
      * @return Movie poster url as a string that Picasso can use to apply to an image view
      */
-    public String getPosterPath(){return mPosterPath;}
+    public String getPosterPath(){
+        if (mPosterPath != null) {
+            return mPosterPath.replaceFirst("http", "https");
+        } else {
+            return mPosterPath;
+        }
+    }
 
     /**
      * @param posterPath Movie poster url as a string that Picasso can use to apply to an image view

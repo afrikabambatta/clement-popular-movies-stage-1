@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.android.popularmovies.R;
 import com.squareup.picasso.Picasso;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Handles the display of the movie details page
  */
@@ -25,11 +28,14 @@ public class DetailActivity extends AppCompatActivity {
     public static final String EXTRA_VOTE_AVERAGE = "extra_vote_average";
     public static final String EXTRA_POSTER_URL = "extra_poster_url";
 
-    TextView titleDisplay;
-    ImageView posterDisplay;
-    TextView releaseDateDisplay;
-    TextView voteAverageDisplay;
-    TextView overviewDisplay;
+    /*
+     * Make a reference to all the views in detail activity
+     */
+    @Bind(R.id.tv_title) TextView titleDisplay;
+    @Bind(R.id.iv_detail_poster) ImageView posterDisplay;
+    @Bind(R.id.tv_release_date) TextView releaseDateDisplay;
+    @Bind(R.id.tv_vote_avg) TextView voteAverageDisplay;
+    @Bind(R.id.tv_overview) TextView overviewDisplay;
 
     /**
      * Populates the detail activity view with movie information passed through by the intent
@@ -40,15 +46,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
-        /*
-         * Make a reference to all the views in detail activity
-         */
-        titleDisplay = findViewById(R.id.tv_title);
-        posterDisplay = findViewById(R.id.iv_detail_poster);
-        releaseDateDisplay = findViewById(R.id.tv_release_date);
-        voteAverageDisplay = findViewById(R.id.tv_vote_avg);
-        overviewDisplay = findViewById(R.id.tv_overview);
+        ButterKnife.bind(this);
 
         // If there is no intent, then something went wrong and we should close the app
         Intent intent = getIntent();
@@ -66,15 +64,9 @@ public class DetailActivity extends AppCompatActivity {
         if(intent.hasExtra(DetailActivity.EXTRA_POSTER_URL)) {
             String posterUrl = intent.getStringExtra(EXTRA_POSTER_URL);
             if(posterUrl == null) {
-                Picasso
-                        .get()
-                        .load(R.drawable.unavailable)
-                        .into(posterDisplay);
+                Picasso.get().load(R.drawable.unavailable).into(posterDisplay);
             } else {
-                Picasso
-                        .get()
-                        .load(posterUrl)
-                        .into(posterDisplay);
+                Picasso.get().load(posterUrl).into(posterDisplay);
             }
         }
 
