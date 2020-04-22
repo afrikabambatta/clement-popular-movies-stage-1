@@ -2,6 +2,8 @@ package com.example.android.popularmovies.Models;
 
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
 /**
  * The movie class contains information that will be used to populate the views on Detail Activity
  */
@@ -16,14 +18,20 @@ public class Movie {
     // An image of the movie poster in size w185
     private ImageView mMoviePoster;
 
-    // The poster path as a string
+    // Poster path as a string
     private String mPosterPath;
 
-    // The average rating of the movie as double between 1-10
+    // Average rating of the movie as double between 1-10
     private double mVoteAverage;
 
-    // The movie's plot
+    // Movie's plot
     private String mOverview;
+
+    // Youtube trailer ids
+    private ArrayList<String> mTrailerIds;
+
+    // User reviews
+    private ArrayList<String> mReviews;
 
     /**
      * Empty default constructor
@@ -87,5 +95,25 @@ public class Movie {
      * @param overview A short overview/synopsis of the movie
      */
     public void setOverview(String overview) { this.mOverview = overview; }
+
+    /**
+     * @return Youtube trailer ids
+     */
+    public ArrayList<String> getTrailerIds() { return mTrailerIds; }
+
+    /**
+     * @param trailersIds Youtube trailer ids
+     */
+    public void setTrailersIds(ArrayList<String> trailersIds) { this.mTrailerIds = trailersIds; }
+
+    /**
+     * @return User reviews
+     */
+    public ArrayList<String> getReviews() { return mReviews; }
+
+    /**
+     * @param reviews User reviews
+     */
+    public void setReviews(ArrayList<String> reviews) { this.mReviews = reviews; }
 
 }
