@@ -30,7 +30,7 @@ public class TheMovieDB {
     private static final String MOVIE_URL = "movie/";
 
     // The url component to access videos
-    private static final String VIDEO = "/videos";
+    private static final String VIDEO = "videos";
 
     // The url component to access reviews
     private static final String REVIEW = "reviews";
@@ -136,7 +136,6 @@ public class TheMovieDB {
         return movieTrailersListUri.toString();
     }
 
-
     /**
      * Build url to retrieve a movie's reviews as a json string
      *
@@ -148,6 +147,32 @@ public class TheMovieDB {
                 .appendEncodedPath(MOVIE_URL)
                 .appendEncodedPath(movieId.toString())
                 .appendEncodedPath(REVIEW)
+                .appendQueryParameter(API_PARAM, API_KEY)
+                .build();
+
+        // Convert the URI to a URL
+        URL url = null;
+        try {
+            url = new URL(movieReviewsUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Log.v(TAG, "Built URI " + url);
+
+        return url;
+    }
+
+    /**
+     * Build url to retrieve a movie's reviews as a json string
+     *
+     * @param movieId This movie id is used to get all reviews associated with that movie
+     * @return A URL that when queried will return a json string containing review information
+     */
+    public static URL buildTrailersListUrl(Integer movieId){
+        Uri movieReviewsUri = Uri.parse(MOVIE_API_URL).buildUpon()
+                .appendEncodedPath(MOVIE_URL)
+                .appendEncodedPath(movieId.toString())
+                .appendEncodedPath(VIDEO)
                 .appendQueryParameter(API_PARAM, API_KEY)
                 .build();
 

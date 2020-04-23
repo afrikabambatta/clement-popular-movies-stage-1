@@ -3,12 +3,14 @@ package com.example.android.popularmovies.Utils;
 import com.example.android.popularmovies.Data.TheMovieDB;
 import com.example.android.popularmovies.Models.Movie;
 import com.example.android.popularmovies.Models.Review;
+import com.example.android.popularmovies.Models.Trailer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Json utility class dedicated to parsing the json string returned from TheMovieDB API. It will
@@ -122,5 +124,41 @@ public class JsonUtils {
             e.printStackTrace();
         }
         return reviews;
+    }
+
+    /**
+     * Parse json string for trailer information. Trailers contain a youtube key and name.
+     *
+     * @param jsonString The json string that will be parsed for trailers
+     * @return List of trailers, each containing a youtube key and name
+     */
+    public static ArrayList<Trailer> parseTrailersJson(String jsonString){
+        ArrayList<Trailer> trailers = new ArrayList<>();
+
+        try {
+            // Get the json object from the json string passed into this function
+            JSONObject jsonObject = new JSONObject(jsonString);
+
+            // Get the movie results array from the json object
+            JSONArray trailersJsonArray = jsonObject.optJSONArray(RESULTS);
+
+            // Extract information from the json array and use it to make movie objects
+            for (int i = 0; i < trailersJsonArray.length(); i++) {
+
+                // Add a new movie for every index in the results array
+                trailers.add(new Trailer());
+
+                // Get the movie at the current index and turn it into an json object
+                JSONObject currentMovieObject = trailersJsonArray.optJSONObject(i);
+
+
+                /* Use the json object to fill the movie with the appropriate data*/
+                trailers.get(i).setName(currentMovieObject.optString(TRAILER_NAME));
+                trailers.get(i).setYoutubeKey(currentMovieObject.optString(TRAILER_ID));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return trailers;
     }
 }

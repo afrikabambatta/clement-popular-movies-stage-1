@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.popularmovies.Data.TheMovieDB;
 import com.example.android.popularmovies.Models.Review;
+import com.example.android.popularmovies.Models.Trailer;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.Utils.JsonUtils;
 import com.example.android.popularmovies.Utils.NetworkUtils;
@@ -23,6 +24,7 @@ import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,12 +32,15 @@ import butterknife.ButterKnife;
 /**
  * Handles the display of the movie details page
  */
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity
+        implements TrailerAdapter.TrailerItemClickListener{
 
     RecyclerView mTrailerRecyclerView;
+    TrailerAdapter mTrailerAdapter;
     RecyclerView mReviewRecyclerView;
     ReviewAdapter mReviewAdapter;
     ArrayList<Review> mReviews;
+    ArrayList<Trailer> mTrailers;
 
     /*
      * The intent extras constants which all contain movie object information
@@ -114,8 +119,20 @@ public class DetailActivity extends AppCompatActivity {
             overviewDisplay.setText(overview);
         }
 
-        // TODO: Load trailers using movie id
-        //TODO: Add recycler view for movie trailers
+        /* Loading Recycler View for Trailers*/
+
+        // Get a handle to the recycler view
+        mTrailerRecyclerView = findViewById(R.id.rv_trailers);
+
+        // Apply horizontal layout manager
+        mTrailerRecyclerView.setLayoutManager(new LinearLayoutManager
+                (this, LinearLayoutManager.HORIZONTAL, false));
+
+        // Create a trailer adapter for the recycler view
+        mTrailerAdapter = new TrailerAdapter(this);
+
+        // Set the trailer adapter on the recycler view
+        mTrailerRecyclerView.setAdapter(mTrailerAdapter);
 
         /* Loading Recycler View for Reviews*/
 
@@ -135,6 +152,7 @@ public class DetailActivity extends AppCompatActivity {
         if (intent.hasExtra(DetailActivity.EXTRA_MOVIE_ID)) {
             int movieId = intent.getIntExtra(EXTRA_MOVIE_ID, 0);
             new FetchReviewsTask().execute(movieId);
+            new FetchTrailersTask().execute(movieId);
         }
 
 
@@ -146,6 +164,21 @@ public class DetailActivity extends AppCompatActivity {
     private void closeOnError() {
         finish();
         Toast.makeText(this, R.string.intent_error_msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTrailerItemClick(int clickedItemIndex) {
+        String trailerId = String.valueOf(mTrailers.get(clickedItemIndex).getYoutubeKey());
+
+
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + trailerId));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.youtube.com/watch?v=" + trailerId));
+        try {
+            startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            startActivity(webIntent);
+        }
     }
 
     // TODO:
@@ -194,6 +227,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
 
+
         /**
          * Parse the json containing review information to create the reviews list that
          * will be used in the review recycler view
@@ -208,6 +242,66 @@ public class DetailActivity extends AppCompatActivity {
 
             // Notify the adapter that the review list has changed
             mReviewAdapter.setReviewsList(mReviews);
+
+
+        }
+    }
+
+    /**
+     * AsyncTask to get the trailers of the movie passed into details activity
+     */
+    public class FetchTrailersTask extends AsyncTask<Integer, Void, String> {
+
+        /**
+         * No pre execution task required.
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * Makes an HTTP request that returns a json string containing a movie list sorted
+         * by movie popularity or vote average
+         *
+         * @param movieId This id of the movie you wish to retrieve reviews for
+         * @return A string representing a json array that holds data to a sorted list of movies
+         */
+        @Override
+        protected String doInBackground(Integer... movieId) {
+
+            //QUESTION: Is query the right name for this?
+            URL trailerQuery;
+
+            // Use the movie id to build the correct query
+            trailerQuery = TheMovieDB.buildTrailersListUrl(movieId[0]);
+
+
+            // Query movie review endpoint and get json string containing reviews information
+            try {
+                String trailersJson = NetworkUtils.getResponseFromHttpUrl(trailerQuery);
+                return trailersJson;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+
+        /**
+         * Parse the json containing review information to create the reviews list that
+         * will be used in the review recycler view
+         *
+         * @param trailersJson The json string produced as a result of the background task
+         */
+        @Override
+        protected void onPostExecute(String trailersJson) {
+
+            // Parse json string to create reviews list
+            mTrailers = JsonUtils.parseTrailersJson(trailersJson);
+
+            // Notify the adapter that the review list has changed
+            mTrailerAdapter.setTrailerList(mTrailers);
 
 
         }

@@ -27,19 +27,11 @@ WIP(5): Create a database using Room to store the names and ids of the user's fa
 WIP(6): New sort criteria to show favorites collection.
     - When the "favorites" setting option is selected, the main view displays the entire favorites collection based on movie ids stored in the database.
 
-1. Do the codelab
-2. Use the endpoints trailer, reviews
-3. Create views in details activity
+DONE Do the codelab
+DONE Use the endpoints trailer, reviews
+DONE Create views in details activity
 4. ROOM implementation
 
-1. DONE Update Movie POJO to include reviews and trailers
-2. Query movie and review endpoint to get string array of ids and reviews
-    - Secondary query after fetchmovie task to movie and reviews
-    DONE Issue with some reviews sliding up while others are not
-3. Put string array of data into bundle extras when detail activity is opened
-4. Set up recycler views for movies and reviews
-    - View should include author and content
-5. Use extras to fill out the recycler view of movies and reviews
 
 
 
