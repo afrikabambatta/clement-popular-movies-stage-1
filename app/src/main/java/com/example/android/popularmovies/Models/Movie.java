@@ -9,6 +9,9 @@ import java.util.ArrayList;
  */
 public class Movie {
 
+    // Movie id for database
+    private int mMovieId;
+
     // Movie title in english
     private String mTitle;
 
@@ -28,10 +31,10 @@ public class Movie {
     private String mOverview;
 
     // Youtube trailer ids
-    private ArrayList<String> mTrailerIds;
+    private String[] mTrailerIds;
 
     // User reviews
-    private ArrayList<String> mReviews;
+    private String[] mReviews;
 
     /**
      * Empty default constructor
@@ -39,6 +42,16 @@ public class Movie {
     public Movie(){
 
     }
+
+    /**
+     * @return Movie id in database
+     */
+    public int getMovieId() { return mMovieId; }
+
+    /**
+     * @param movieId Movie id in database
+     */
+    public void setMovieId(int movieId) { this.mMovieId = movieId; }
 
     /**
      * @return Title of the movie
@@ -99,21 +112,21 @@ public class Movie {
     /**
      * @return Youtube trailer ids
      */
-    public ArrayList<String> getTrailerIds() { return mTrailerIds; }
+    public String[] getTrailerIds() { return mTrailerIds; }
 
     /**
      * @param trailersIds Youtube trailer ids
      */
-    public void setTrailersIds(ArrayList<String> trailersIds) { this.mTrailerIds = trailersIds; }
+    public void setTrailersIds(String[] trailersIds) { this.mTrailerIds = trailersIds; }
 
     /**
      * @return User reviews
      */
-    public ArrayList<String> getReviews() { return mReviews; }
+    public String[] getReviews() { return mReviews; }
 
     /**
      * @param reviews User reviews
      */
-    public void setReviews(ArrayList<String> reviews) { this.mReviews = reviews; }
+    public void setReviews(String[] reviews) { this.mReviews = reviews; }
 
 }

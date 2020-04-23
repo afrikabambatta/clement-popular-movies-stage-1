@@ -125,6 +125,17 @@
             android:textSize="@dimen/body_text"
             tools:text="This is a story of a retired man who get's woken up by bad guys he blasts them to smithreens. I hear his dog dies and the gun actionin this movie is top notch. Imagine a modern day technology of the matrix where the action is so good you can't help but enjoy the sequence" />
 
+        
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SEND MOVIE INTENT"
+            android:onClick="watchYoutubeVideo"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
 </ScrollView>

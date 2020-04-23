@@ -159,6 +159,10 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(DetailActivity.EXTRA_OVERVIEW,
                 mMoviesList.get(clickedItemIndex).getOverview());
 
+        // Put movie id
+        intent.putExtra(DetailActivity.EXTRA_MOVIE_ID,
+                mMoviesList.get(clickedItemIndex).getMovieId());
+
         return intent;
     }
 

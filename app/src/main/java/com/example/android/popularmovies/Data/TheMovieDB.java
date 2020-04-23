@@ -25,6 +25,17 @@ public class TheMovieDB {
     // The movie api website url
     private static final String MOVIE_API_URL = "https://api.themoviedb.org/3/";
 
+    // QUESTION: How to go about naming these static finals so that I can build URL
+    // The url component to access movies
+    private static final String MOVIE_URL = "movie/";
+
+    // The url component to access videos
+    private static final String VIDEO = "/videos";
+
+    // The url component to access reviews
+    private static final String REVIEW = "reviews";
+
+
     // The url component to access movies by popularity
     private static final String DISCOVER_MOVIE = "discover/movie";
 
@@ -108,4 +119,47 @@ public class TheMovieDB {
         return posterImageUri.toString();
     }
 
+    /**
+     * Build the url to get movie trailers
+     *
+     * @param movieId Id of the movie you wish to get trailer information from
+     * @return Json object containing the movie's trailer information
+     */
+    public static String buildMovieTrailersListUrl(String movieId){
+        Uri movieTrailersListUri = Uri.parse(MOVIE_API_URL).buildUpon()
+                .appendEncodedPath(MOVIE_URL)
+                .appendEncodedPath(movieId)
+                .appendEncodedPath(VIDEO)
+                .appendQueryParameter(API_PARAM, API_KEY)
+                .build();
+
+        return movieTrailersListUri.toString();
+    }
+
+
+    /**
+     * Build url to retrieve a movie's reviews as a json string
+     *
+     * @param movieId This movie id is used to get all reviews associated with that movie
+     * @return A URL that when queried will return a json string containing review information
+     */
+    public static URL buildReviewsListUrl(Integer movieId){
+        Uri movieReviewsUri = Uri.parse(MOVIE_API_URL).buildUpon()
+                .appendEncodedPath(MOVIE_URL)
+                .appendEncodedPath(movieId.toString())
+                .appendEncodedPath(REVIEW)
+                .appendQueryParameter(API_PARAM, API_KEY)
+                .build();
+
+        // Convert the URI to a URL
+        URL url = null;
+        try {
+            url = new URL(movieReviewsUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Log.v(TAG, "Built URI " + url);
+
+        return url;
+    }
 }
