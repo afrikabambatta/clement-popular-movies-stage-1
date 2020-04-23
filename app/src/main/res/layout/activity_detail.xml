@@ -1,141 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView2"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
+            android:layout_height="60dp"
+            android:background="#129292"
             android:gravity="center"
-            android:padding="@dimen/small_padding"
-            android:textColor="@color/whiteText"
-            android:textSize="@dimen/title_text"
-            android:textStyle="bold"
-            tools:text="John Wick" />
+            android:padding="4dp"
+            android:text="Harry Potter and the Sorcerer Stone"
+            app:autoSizeMaxTextSize="48sp"
+            app:autoSizeMinTextSize="20sp"
+            app:autoSizeStepGranularity="4sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorSecondary"
-            android:layout_marginBottom="@dimen/med_margin"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/iv_detail_poster"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:padding="@dimen/med_padding"
-                android:src="@drawable/unavailable"
-                tools:src="@drawable/johnwick" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="2"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top|center_horizontal"
-                        android:gravity="center"
-                        android:text="@string/vote_average"
-                        android:textColor="@color/whiteText"
-                        android:textSize="@dimen/header_text"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_vote_avg"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center"
-                        android:textColor="@color/whiteText"
-                        android:textSize="@dimen/vote_text"
-                        tools:text="7" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/med_margin"
-                        android:gravity="center_horizontal"
-                        android:text="@string/release_date"
-                        android:textColor="@color/whiteText"
-                        android:textSize="@dimen/header_text"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_release_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/med_margin"
-                        android:layout_marginBottom="@dimen/med_margin"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/whiteText"
-                        android:textSize="@dimen/header_text"
-                        tools:text="2019-01-24" />
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_detail_poster"
+            android:layout_width="185dp"
+            android:layout_height="278dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            app:srcCompat="@drawable/johnwick" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/tv_vote_avg"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/med_margin"
-            android:layout_marginLeft="@dimen/med_margin"
-            android:text="@string/overview"
-            android:textSize="@dimen/header_text"
-            android:textStyle="bold" />
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="60sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_detail_poster"
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            tools:text="9.2" />
+
+        <ImageView
+            android:id="@+id/iv_favorite"
+            android:layout_width="81dp"
+            android:layout_height="71dp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_vote_avg"
+            app:layout_constraintStart_toStartOf="@+id/tv_vote_avg"
+            app:layout_constraintTop_toBottomOf="@+id/tv_vote_avg"
+            app:srcCompat="@android:drawable/btn_star" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="User Rating"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_detail_poster"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Release Date"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/iv_favorite"
+            app:layout_constraintStart_toStartOf="@+id/iv_favorite"
+            app:layout_constraintTop_toBottomOf="@+id/iv_favorite" />
+
+        <TextView
+            android:id="@+id/tv_release_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/textView4"
+            app:layout_constraintStart_toStartOf="@+id/textView4"
+            app:layout_constraintTop_toBottomOf="@+id/textView4"
+            tools:text="02-15-17" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Plot"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_detail_poster" />
 
         <TextView
             android:id="@+id/tv_overview"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/med_margin"
-            android:layout_marginLeft="@dimen/med_margin"
-            android:layout_marginBottom="@dimen/med_margin"
-            android:textSize="@dimen/body_text"
-            tools:text="This is a story of a retired man who get's woken up by bad guys he blasts them to smithreens. I hear his dog dies and the gun actionin this movie is top notch. Imagine a modern day technology of the matrix where the action is so good you can't help but enjoy the sequence" />
-
-        
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="SEND MOVIE INTENT"
-            android:onClick="watchYoutubeVideo"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7"
+            tools:text="This is a really long test that is just for testing for some reason I am a little irritated right now maybe a low temperature of the difference in how things are going with the long indoor conversations and outdoor outpour of the materializing world of final fantasy" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_reviews"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
-    </LinearLayout>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Reviews"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_overview" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
