@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,7 +25,6 @@ import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
  * Handles the display of the movie details page
  */
 public class DetailActivity extends AppCompatActivity
-        implements TrailerAdapter.TrailerItemClickListener{
+        implements TrailerAdapter.TrailerItemClickListener, View.OnClickListener{
 
     RecyclerView mTrailerRecyclerView;
     TrailerAdapter mTrailerAdapter;
@@ -41,6 +41,7 @@ public class DetailActivity extends AppCompatActivity
     ReviewAdapter mReviewAdapter;
     ArrayList<Review> mReviews;
     ArrayList<Trailer> mTrailers;
+    ImageView mFavoriteIcon;
 
     /*
      * The intent extras constants which all contain movie object information
@@ -77,6 +78,10 @@ public class DetailActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
+
+        // Set click listener for button
+        mFavoriteIcon = findViewById(R.id.iv_favorite);
+        mFavoriteIcon.setOnClickListener(this);
 
         // If there is no intent, then something went wrong and we should close the app
         Intent intent = getIntent();
@@ -164,6 +169,18 @@ public class DetailActivity extends AppCompatActivity
     private void closeOnError() {
         finish();
         Toast.makeText(this, R.string.intent_error_msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.iv_favorite:
+                mFavoriteIcon.setImageResource(R.drawable.favorite_icon_on);
+                Log.v("TEST", "The Star was Clicked!");
+                // TODO: Add movie into favorite zoom table
+                break;
+            default:
+        }
     }
 
     @Override

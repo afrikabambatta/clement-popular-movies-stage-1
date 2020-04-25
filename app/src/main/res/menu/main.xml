@@ -11,4 +11,8 @@
         android:id="@+id/action_sort_by_rating"
         android:title="Rating" />
 
+    <item
+        android:id="@+id/action_sort_by_favorites"
+        android:title="Favorites" />
+
 </menu>

@@ -2,39 +2,49 @@ package com.example.android.popularmovies.Models;
 
 import android.widget.ImageView;
 
-import java.util.ArrayList;
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 /**
  * The movie class contains information that will be used to populate the views on Detail Activity
  */
+@Entity(tableName="favorites")
 public class Movie {
 
     // Movie id for database
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name="id")
     private int mMovieId;
 
     // Movie title in english
+    @ColumnInfo(name="title")
     private String mTitle;
 
     // Release date is stored as a string in the API (ex. 2014-10-22)
+    @ColumnInfo(name="release_date")
     private String mReleaseDate;
 
     // An image of the movie poster in size w185
+    @Ignore
     private ImageView mMoviePoster;
 
     // Poster path as a string
+    @ColumnInfo(name="poster_path")
     private String mPosterPath;
 
     // Average rating of the movie as double between 1-10
+    @ColumnInfo(name="vote_average")
     private double mVoteAverage;
 
     // Movie's plot
+    @ColumnInfo(name="overview")
     private String mOverview;
 
-    // Youtube trailer ids
-    private String[] mTrailerIds;
-
-    // User reviews
-    private String[] mReviews;
+    //QUESTION: I think I need a field in here that tells me whether this movie is favorited or not
 
     /**
      * Empty default constructor
@@ -108,25 +118,5 @@ public class Movie {
      * @param overview A short overview/synopsis of the movie
      */
     public void setOverview(String overview) { this.mOverview = overview; }
-
-    /**
-     * @return Youtube trailer ids
-     */
-    public String[] getTrailerIds() { return mTrailerIds; }
-
-    /**
-     * @param trailersIds Youtube trailer ids
-     */
-    public void setTrailersIds(String[] trailersIds) { this.mTrailerIds = trailersIds; }
-
-    /**
-     * @return User reviews
-     */
-    public String[] getReviews() { return mReviews; }
-
-    /**
-     * @param reviews User reviews
-     */
-    public void setReviews(String[] reviews) { this.mReviews = reviews; }
 
 }

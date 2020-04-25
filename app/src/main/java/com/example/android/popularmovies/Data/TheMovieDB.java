@@ -19,6 +19,9 @@ public class TheMovieDB {
     // Param to sort movies by ratings in descending order
     public static final String VOTE_AVG_DESCENDING = "vote_average.desc";
 
+    // Param to display movies that have been favorited
+    public static final String FAVORITES = "favorites";
+
     // Log cat tag for debugging
     private static final String TAG = TheMovieDB.class.getSimpleName();
 
