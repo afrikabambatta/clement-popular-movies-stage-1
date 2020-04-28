@@ -13,18 +13,17 @@ public abstract class MovieRoomDatabase extends RoomDatabase {
     public abstract MovieDao movieDao();
     private static MovieRoomDatabase INSTANCE;
 
+
+    // If the database is null, then synchronize the database class and check if it's null again...???
     static MovieRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (MovieRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             MovieRoomDatabase.class, "movie_database")
-                            // Wipes and rebuilds instead of migrating
-                            // if no Migration object.
-                            // Migration is not part of this practical.
                             .fallbackToDestructiveMigration()
                             .build();
-                } // QUESTION: Is there a way to persist the data on app close?
+                }
             }
         }
         return INSTANCE;

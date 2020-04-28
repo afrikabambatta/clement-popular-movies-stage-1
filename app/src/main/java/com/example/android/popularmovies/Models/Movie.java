@@ -53,6 +53,15 @@ public class Movie {
 
     }
 
+    public Movie(int movieId, String title, String releaseDate, String posterPath, double voteAverage, String overview){
+        this.mMovieId = movieId;
+        this.mTitle = title;
+        this.mReleaseDate = releaseDate;
+        this.mPosterPath = posterPath;
+        this.mVoteAverage = voteAverage;
+        this.mOverview = overview;
+    }
+
     /**
      * @return Movie id in database
      */

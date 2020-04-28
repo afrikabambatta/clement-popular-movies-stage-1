@@ -1,5 +1,11 @@
 package com.example.android.popularmovies.Utils;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
 import com.example.android.popularmovies.Data.TheMovieDB;
 import com.example.android.popularmovies.Models.Movie;
 import com.example.android.popularmovies.Models.Review;
@@ -40,9 +46,10 @@ public class JsonUtils {
      * @param movieListJsonStr
      * @return
      */
-    public static ArrayList<Movie> parseMovieJson(String movieListJsonStr) {
+    public static LiveData<List<Movie>> parseMovieJson(String movieListJsonStr) {
 
-        ArrayList<Movie> movies = new ArrayList<Movie>();
+        List<Movie> movies = new ArrayList<>();
+         //TODO: Get this to work List does not work!
 
         try {
             // Get the json object from the json string passed into this function
@@ -53,6 +60,7 @@ public class JsonUtils {
 
             // Extract information from the json array and use it to make movie objects
             for (int i = 0; i < resultsJsonArray.length(); i++) {
+
 
                 // Add a new movie for every index in the results array
                 movies.add(new Movie());
@@ -78,10 +86,12 @@ public class JsonUtils {
                             TheMovieDB.buildMoviePosterPath(currentMovieObject.optString(POSTER_PATH));
                     movies.get(i).setPosterPath(posterPath);
                 }
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         return movies;
     }
 

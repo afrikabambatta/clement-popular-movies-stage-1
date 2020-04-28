@@ -14,6 +14,7 @@ import com.example.android.popularmovies.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is needed to create the grid recycler view in MainActivity. It adapts information
@@ -25,7 +26,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
     final private MovieItemClickListener mOnClickListener;
 
     // This private movie list variable will contain the movie list extract from TheMovieDB
-    private ArrayList<Movie> mMoviesList;
+    private List<Movie> mMoviesList;
 
     /**
      * Interface for ClickListener
@@ -41,7 +42,6 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
      */
     public MovieGridAdapter(MovieItemClickListener listener){
         mOnClickListener = listener;
-        mMoviesList = new ArrayList<>();
     }
 
     /**
@@ -50,7 +50,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.Movi
      *
      * @param moviesList A list of movies containing basic information
      */
-    public void setMoviesList(ArrayList<Movie> moviesList){
+    public void setMoviesList(List<Movie> moviesList){
         mMoviesList.clear();
         mMoviesList.addAll(moviesList);
         notifyDataSetChanged();

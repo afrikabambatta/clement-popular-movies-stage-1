@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,11 +17,8 @@ import android.view.MenuItem;
 import com.example.android.popularmovies.Data.MovieViewModel;
 import com.example.android.popularmovies.Data.TheMovieDB;
 import com.example.android.popularmovies.R;
-import com.example.android.popularmovies.Utils.NetworkUtils;
 import com.example.android.popularmovies.Models.Movie;
-import com.example.android.popularmovies.Utils.JsonUtils;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +36,7 @@ public class MainActivity extends AppCompatActivity
     private MovieGridAdapter mAdapter;
     private ArrayList<Movie> mMoviesList;
     private MovieViewModel mMovieViewModel;
-    private String mSortOrder = TheMovieDB.POPULARITY_DESCENDING; // Defaults to popularity
+    private String mFilter = TheMovieDB.POPULARITY_DESCENDING; // Defaults to popularity
 
     /**
      * On program boot up this will create the main activity.
@@ -52,38 +48,28 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Setup movie poster grid recycler view
+        mRecyclerView = findViewById(R.id.rv_movies);
+        mRecyclerView.setLayoutManager(new GridLayoutManager
+                (this, 2, RecyclerView.VERTICAL, false));
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new MovieGridAdapter(this);
+        mRecyclerView.setAdapter(mAdapter);
+
+        // Set up the view model
+        setupViewModel();
+    }
+
+    public void setupViewModel() {
         // Retrieve movie view model from view model class
         mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
-        // QUESTION: What is this nested class definition thing going on
-        mMovieViewModel.getAllMovies().observe(this, new Observer<List<Movie>>() {
+        mMovieViewModel.getMovies().observe(this, new Observer<List<Movie>>() { // QUESTION: How do you change this to lambda expression
             @Override
-            public void onChanged(@Nullable final List<Movie> words) {
-                // Update the cached copy of the movies in the adapter IF sort order is favorites
-                if(mSortOrder.equals(TheMovieDB.FAVORITES)){
-                    mAdapter.setMoviesList(mMoviesList);
-                }
+            public void onChanged(@Nullable final List<Movie> movies) {
+                mAdapter.setMoviesList(movies);
             }
         });
-
-        // Get a handle to the recycler view
-        mRecyclerView = findViewById(R.id.rv_movies);
-
-        // Apply a 2 column grid layout manager to the recycler view
-        mRecyclerView.setLayoutManager(new GridLayoutManager
-                (this, 2, RecyclerView.VERTICAL, false));
-
-        // Let the recycler view know viewholders are a fixed size to boost performance
-        mRecyclerView.setHasFixedSize(true);
-
-        // Create a movie adapter for the recycler view
-        mAdapter = new MovieGridAdapter(this);
-
-        // Set the movie adapter on the recycler view
-        mRecyclerView.setAdapter(mAdapter);
-
-        // Method used to fetch and create list of movies using TheMovieDB API
-        loadMoviesList();
     }
 
     /**
@@ -95,10 +81,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        // Use AppCompatActivity's method getMenuInflater to get a handle on the menu inflater
         MenuInflater inflater = getMenuInflater();
-
-        // Use the inflater's inflate method to inflate our menu layout to this menu
         inflater.inflate(R.menu.main, menu);
 
         // Return true so that the menu is displayed in the Toolbar
@@ -110,27 +93,33 @@ public class MainActivity extends AppCompatActivity
      *
      * @param item The menu item that was selected.
      * @return Return false to allow normal menu processing to
-     *         proceed, true to consume it here.
+     * proceed, true to consume it here.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.action_sort_by_popularity:
-                mSortOrder = TheMovieDB.POPULARITY_DESCENDING;
+                setTitle(R.string.title_popular);
+                mMovieViewModel.setFilter(TheMovieDB.POPULARITY_DESCENDING);
                 break;
             case R.id.action_sort_by_rating:
-                mSortOrder = TheMovieDB.VOTE_AVG_DESCENDING;
+                setTitle(R.string.title_vote_average);
+                mMovieViewModel.setFilter(TheMovieDB.VOTE_AVG_DESCENDING);
                 break;
             case R.id.action_sort_by_favorites:
-                mSortOrder = TheMovieDB.FAVORITES;
+                setTitle("Favorites"); //TODO: Turn to resource string
+                mMovieViewModel.setFilter(TheMovieDB.FAVORITES);
                 break;
             default: // Default to popularity sort in case none was specified
-                mSortOrder = TheMovieDB.POPULARITY_DESCENDING;
+                mMovieViewModel.setFilter(TheMovieDB.VOTE_AVG_DESCENDING);
+                Log.d(TAG, "Issue with sort order");
                 break;
         }
-        loadMoviesList();
+
+        // Make the app scroll back to the top of the list every time sort order is changed
+        mRecyclerView.smoothScrollToPosition(0);
 
         return super.onOptionsItemSelected(item);
     }
@@ -141,7 +130,7 @@ public class MainActivity extends AppCompatActivity
      * to start detail activity.
      *
      * @param clickedItemIndex The index of the clicked viewholder, used so the detail activity
-     *                        receives information from the correct movie in the movie list
+     *                         receives information from the correct movie in the movie list
      */
     @Override
     public void onMovieItemClick(int clickedItemIndex) {
@@ -157,11 +146,11 @@ public class MainActivity extends AppCompatActivity
      * Use to put extras into the intent used to start detail activity. Extras include title,
      * poster url, vote average, release date, and overview.
      *
-     * @param intent The intent that this function will put extras into
+     * @param intent           The intent that this function will put extras into
      * @param clickedItemIndex The index used to get data from the correct movie from mMovieList
      * @return The intent that will be used to start detail activity
      */
-    public Intent putDetailExtras(Intent intent, int clickedItemIndex){
+    public Intent putDetailExtras(Intent intent, int clickedItemIndex) {
 
         // Put the title
         intent.putExtra(DetailActivity.EXTRA_TITLE,
@@ -175,7 +164,7 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(DetailActivity.EXTRA_RELEASE_DATE,
                 mMoviesList.get(clickedItemIndex).getReleaseDate());
 
-        // Put the vote average, converted to string because textviews require strings
+        // Put the vote average, converted to string because text views require strings
         intent.putExtra(DetailActivity.EXTRA_VOTE_AVERAGE,
                 String.valueOf(mMoviesList.get(clickedItemIndex).getVoteAverage()));
 
@@ -188,107 +177,5 @@ public class MainActivity extends AppCompatActivity
                 mMoviesList.get(clickedItemIndex).getMovieId());
 
         return intent;
-    }
-
-    /**
-     * Call function to fetch the movie list from TheMovieDB API. The movie list returned is
-     * dependent on the state of the spinner: popularity or vote average (descending order)
-     */
-    public void loadMoviesList() {
-
-        // Get movies from TheMovieDB API
-        new FetchMoviesTask().execute(mSortOrder);
-
-        // Change the title to match the sort order
-        if(mSortOrder.equals(TheMovieDB.POPULARITY_DESCENDING)) {
-            setTitle(R.string.title_popular);
-        } else if(mSortOrder.equals(TheMovieDB.VOTE_AVG_DESCENDING)){
-            setTitle(R.string.title_vote_average);
-        } else if(mSortOrder.equals(TheMovieDB.FAVORITES)) {
-            setTitle("Favorites"); //TODO: Turn to resource string
-        } else {
-            Log.d(TAG, "Issue with sort order");
-        }
-        // Make the app scroll back to the top of the list every time sort order is changed
-        mRecyclerView.smoothScrollToPosition(0);
-    }
-
-    /**
-     * Makes an HTTP request to TheMovieDB that returns a json object containing a list of movies
-     * sorted by popularity or vote average. The post execution then parses the data from that
-     * json object and populates the arraylist mMovieList
-     */
-    public class FetchMoviesTask extends AsyncTask<String, Void, String> {
-
-        /**
-         * No pre execution task required.
-         */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        /**
-         * Makes an HTTP request that returns a json string containing a movie list sorted
-         * by movie popularity or vote average
-         *
-         * @param filterOption Determines whether movies should be sorted by popularity or vote
-         *                     average
-         * @return A string representing a json array that holds data to a sorted list of movies
-         */
-        @Override
-        protected String doInBackground(String... filterOption) {
-
-            URL movieListRequestUrl;
-
-            if(filterOption[0].equals(TheMovieDB.FAVORITES)){
-               // ArrayList<Movie> movies = mMovieViewModel.getAllMovies(); // QUESTION: Do I have to change everything into live data?
-               // mAdapter.setMoviesList(mMovieViewModel.getAllMovies());
-                mMovieViewModel.getAllMovies();
-            }
-
-            /*
-             * Creates a url based on the filter option: popularity or vote average
-             */
-            if (filterOption[0].equals(TheMovieDB.POPULARITY_DESCENDING)) {
-                movieListRequestUrl = TheMovieDB.buildMovieListUrl(TheMovieDB.POPULARITY_DESCENDING);
-            } else if (filterOption[0].equals(TheMovieDB.VOTE_AVG_DESCENDING)) {
-                movieListRequestUrl = TheMovieDB.buildMovieListUrl(TheMovieDB.VOTE_AVG_DESCENDING);
-            } else {
-                // defaults to popularity sort and gives a warning
-                movieListRequestUrl = TheMovieDB.buildMovieListUrl(TheMovieDB.POPULARITY_DESCENDING);
-                Log.d(TAG, "Movie sort was forced to default to popularity");
-            }
-
-            /*
-             * Use the generated url to make an http request to TheMovieDB API and return
-             * a string representation of a json array containing a sorted movie list
-             */
-            try {
-                String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieListRequestUrl);
-                return jsonMovieResponse;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        /**
-         * Takes the json object that was queried in the background and parses it to populate
-         * the movies list stored in mMoviesList
-         *
-         * @param jsonMovieResponse The json string produced as a result of the background task
-         */
-        @Override
-        protected void onPostExecute(String jsonMovieResponse) {
-
-            // Parse json string to populate movies list
-            mMoviesList = JsonUtils.parseMovieJson(jsonMovieResponse);
-
-            // Notify the adapter that the movie list has changed
-            mAdapter.setMoviesList(mMoviesList);
-
-
-        }
     }
 }

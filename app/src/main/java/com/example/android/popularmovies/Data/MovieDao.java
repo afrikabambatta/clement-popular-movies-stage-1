@@ -21,7 +21,7 @@ public interface MovieDao {
 
     // QUESTION: Why does this have to be a List and ArrayList does not work
     @Query("SELECT * FROM favorites")
-    LiveData<List<Movie>> getAllMovies();
+    LiveData<List<Movie>> getMovies();
 
     @Query("DELETE FROM favorites WHERE id = :movieId")
     void removeMovie(String movieId);

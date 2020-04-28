@@ -11,11 +11,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android.popularmovies.Data.MovieViewModel;
 import com.example.android.popularmovies.Data.TheMovieDB;
+import com.example.android.popularmovies.Models.Movie;
 import com.example.android.popularmovies.Models.Review;
 import com.example.android.popularmovies.Models.Trailer;
 import com.example.android.popularmovies.R;
@@ -25,6 +31,7 @@ import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,6 +49,7 @@ public class DetailActivity extends AppCompatActivity
     ArrayList<Review> mReviews;
     ArrayList<Trailer> mTrailers;
     ImageView mFavoriteIcon;
+    ViewModel mMovieViewModel;
 
     /*
      * The intent extras constants which all contain movie object information
@@ -83,19 +91,48 @@ public class DetailActivity extends AppCompatActivity
         mFavoriteIcon = findViewById(R.id.iv_favorite);
         mFavoriteIcon.setOnClickListener(this);
 
+        loadIntentExtras();
+
+        // Setup Recycler View for Trailers
+        mTrailerRecyclerView = findViewById(R.id.rv_trailers);
+        mTrailerRecyclerView.setLayoutManager(new LinearLayoutManager
+                (this, LinearLayoutManager.HORIZONTAL, false));
+        mTrailerAdapter = new TrailerAdapter(this);
+        mTrailerRecyclerView.setAdapter(mTrailerAdapter);
+
+        // Setup Recycler View for Reviews
+        mReviewRecyclerView = findViewById(R.id.rv_reviews);
+        mReviewRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mReviewAdapter = new ReviewAdapter();
+        mReviewRecyclerView.setAdapter(mReviewAdapter);
+
+        // Set up the view model
+        setupViewModel();
+
+    }
+
+    public void setupViewModel(){
+        // Retrieve movie view model from view model class
+        mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+
+        // QUESTION: What is this nested class definition thing going on
+        ((MovieViewModel) mMovieViewModel).insert(new Movie());
+    }
+
+    private void loadIntentExtras(){
         // If there is no intent, then something went wrong and we should close the app
         Intent intent = getIntent();
         if (intent == null) {
             closeOnError();
         }
 
-        // Load movie title using intent extra
+        // Movie Title
         if (intent.hasExtra(DetailActivity.EXTRA_TITLE)) {
             String title = intent.getStringExtra(DetailActivity.EXTRA_TITLE);
             titleDisplay.setText(title);
         }
 
-        // Load movie poster or if poster path url is null, then set unavailable resource by default
+        // Movie Poster
         if (intent.hasExtra(DetailActivity.EXTRA_POSTER_URL)) {
             String posterUrl = intent.getStringExtra(EXTRA_POSTER_URL);
             if (posterUrl == null) {
@@ -105,62 +142,30 @@ public class DetailActivity extends AppCompatActivity
             }
         }
 
-        // Load movie release date
+        // Release Date
         if (intent.hasExtra(DetailActivity.EXTRA_RELEASE_DATE)) {
             String releaseDate = intent.getStringExtra(EXTRA_RELEASE_DATE);
             releaseDateDisplay.setText(releaseDate);
         }
 
-        // Load movie voting average
+        // Vote Average
         if (intent.hasExtra(DetailActivity.EXTRA_VOTE_AVERAGE)) {
-
             String voteAverage = intent.getStringExtra(EXTRA_VOTE_AVERAGE);
             voteAverageDisplay.setText(voteAverage);
         }
 
-        // Load movie overview
+        // Overview
         if (intent.hasExtra(DetailActivity.EXTRA_OVERVIEW)) {
             String overview = intent.getStringExtra(EXTRA_OVERVIEW);
             overviewDisplay.setText(overview);
         }
 
-        /* Loading Recycler View for Trailers*/
-
-        // Get a handle to the recycler view
-        mTrailerRecyclerView = findViewById(R.id.rv_trailers);
-
-        // Apply horizontal layout manager
-        mTrailerRecyclerView.setLayoutManager(new LinearLayoutManager
-                (this, LinearLayoutManager.HORIZONTAL, false));
-
-        // Create a trailer adapter for the recycler view
-        mTrailerAdapter = new TrailerAdapter(this);
-
-        // Set the trailer adapter on the recycler view
-        mTrailerRecyclerView.setAdapter(mTrailerAdapter);
-
-        /* Loading Recycler View for Reviews*/
-
-        // Get a handle to the recycler view
-        mReviewRecyclerView = findViewById(R.id.rv_reviews);
-
-        // Apply a 2 column grid layout manager to the recycler view
-        mReviewRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Create a movie adapter for the recycler view
-        mReviewAdapter = new ReviewAdapter();
-
-        // Set the movie adapter on the recycler view
-        mReviewRecyclerView.setAdapter(mReviewAdapter);
-
-        // Get the movie id and use it to query the movie's reviews in the background
+        // Reviews and Trailers
         if (intent.hasExtra(DetailActivity.EXTRA_MOVIE_ID)) {
             int movieId = intent.getIntExtra(EXTRA_MOVIE_ID, 0);
             new FetchReviewsTask().execute(movieId);
             new FetchTrailersTask().execute(movieId);
         }
-
-
     }
 
     /**
@@ -171,22 +176,33 @@ public class DetailActivity extends AppCompatActivity
         Toast.makeText(this, R.string.intent_error_msg, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Used to determine if the favorite icon is clicked. Will record it in the Room database
+     * accordingly.
+     *
+     * @param view The clicked view
+     */
     @Override
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.iv_favorite:
                 mFavoriteIcon.setImageResource(R.drawable.favorite_icon_on);
                 Log.v("TEST", "The Star was Clicked!");
-                // TODO: Add movie into favorite zoom table
+                // TODO: Add movie into favorite room table
                 break;
             default:
         }
     }
 
+    /**
+     * Tries to run the trailer via youtube app but if app is unavailable then run web version of
+     * youtube.
+     *
+     * @param clickedItemIndex Index of trailer in movie's trailer list
+     */
     @Override
     public void onTrailerItemClick(int clickedItemIndex) {
         String trailerId = String.valueOf(mTrailers.get(clickedItemIndex).getYoutubeKey());
-
 
         Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + trailerId));
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
@@ -197,12 +213,6 @@ public class DetailActivity extends AppCompatActivity
             startActivity(webIntent);
         }
     }
-
-    // TODO:
-    //  - using the movie id, use the movie db to build list of movie trailers
-    //  - from the movie trailers, extract the name of the trailer
-    //  - from the movie trailers, extract the video key
-    //  - create an image view of youtube icon, and put the trailer name below it, use recycle view
 
     /**
      * AsyncTask to get the reviews of the movie passed into details activity
@@ -320,20 +330,6 @@ public class DetailActivity extends AppCompatActivity
             // Notify the adapter that the review list has changed
             mTrailerAdapter.setTrailerList(mTrailers);
 
-
-        }
-    }
-
-
-    // TEST: REMOVE THIS TESTING CODE
-    public void watchYoutubeVideo(View view) {
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + "P6AaSMfXHbA"));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://www.youtube.com/watch?v=" + "P6AaSMfXHbA"));
-        try {
-            startActivity(appIntent);
-        } catch (ActivityNotFoundException ex) {
-            startActivity(webIntent);
         }
     }
 }
